@@ -51,5 +51,3 @@ DanhGia.init(
     timestamps: false,
   }
 );
-
-DanhGia.belongsTo(SanPham, { foreignKey: "MaSP" });

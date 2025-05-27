@@ -2,6 +2,7 @@ import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
 import { TaiKhoan } from "./TaiKhoan";
 import { ChiTietHoaDon } from "./ChiTietHoaDon";
+import { TtVanChuyen } from "./TtVanChuyen";
 
 interface HoaDonAttrs {
   MaHD: string;
@@ -54,12 +55,16 @@ HoaDon.init(
   }
 );
 
-HoaDon.belongsTo(TaiKhoan, { foreignKey: "MaTK", as: "taiKhoan" });
 HoaDon.hasMany(ChiTietHoaDon, {
   foreignKey: "MaHD",
   sourceKey: "MaHD",
+  as: "DanhSachSanPham",
 });
+
 ChiTietHoaDon.belongsTo(HoaDon, {
   foreignKey: "MaHD",
   targetKey: "MaHD",
 });
+
+TtVanChuyen.belongsTo(HoaDon, { foreignKey: "MaHD", targetKey: "MaHD" });
+HoaDon.hasOne(TtVanChuyen, { foreignKey: "MaHD", sourceKey: "MaHD" });

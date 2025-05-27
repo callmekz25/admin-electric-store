@@ -7,6 +7,12 @@ import {
 } from "express";
 import { db } from "../models";
 import { ChiTietHoaDon } from "../models/ChiTietHoaDon";
+import { SanPham } from "../models/SanPham";
+import { ChiTietSanPham } from "../models/ChiTietSanPham";
+import { TaiKhoan } from "../models/TaiKhoan";
+import { NhaCungCap } from "../models/NhaCungCap";
+import { LoaiSanPham } from "../models/LoaiSanPham";
+import { TtVanChuyen } from "../models/TtVanChuyen";
 
 const router = Router();
 
@@ -27,6 +33,31 @@ router.get("/", async (_req, res, next) => {
       include: [
         {
           model: ChiTietHoaDon,
+          as: "DanhSachSanPham",
+          include: [
+            {
+              model: SanPham,
+              include: [
+                {
+                  model: ChiTietSanPham,
+                  include: [
+                    {
+                      model: NhaCungCap,
+                    },
+                    {
+                      model: LoaiSanPham,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: TaiKhoan,
+        },
+        {
+          model: TtVanChuyen,
         },
       ],
     });

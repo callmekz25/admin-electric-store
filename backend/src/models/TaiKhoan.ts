@@ -1,8 +1,9 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
 import { DanhGia } from "./DanhGia";
+import { HoaDon } from "./HoaDon";
 
-interface TaiKhoanAttrs {
+export interface TaiKhoanAttrs {
   MaTK: string;
   HoTenTK: string;
   TenDangNhap: string;
@@ -53,3 +54,11 @@ TaiKhoan.init(
 
 TaiKhoan.hasMany(DanhGia, { foreignKey: "MaTK", sourceKey: "MaTK" });
 DanhGia.belongsTo(TaiKhoan, { foreignKey: "MaTK", targetKey: "MaTK" });
+
+TaiKhoan.hasMany(HoaDon, {
+  foreignKey: "MaTk",
+  sourceKey: "MaTK",
+  as: "DanhSachHoaDon",
+});
+
+HoaDon.belongsTo(TaiKhoan, { foreignKey: "MaTK", targetKey: "MaTK" });

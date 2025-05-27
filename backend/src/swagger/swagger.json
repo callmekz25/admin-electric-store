@@ -1,0 +1,27 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/tai-khoan": {
+      "get": {
+        "summary": "Lấy tất cả tài khoản",
+        "responses": {
+          "200": {
+            "description": "Một danh sách các tài khoản",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "object" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

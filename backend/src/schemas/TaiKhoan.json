@@ -1,0 +1,50 @@
+{
+  "$ref": "#/definitions/TaiKhoanAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "TaiKhoanAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "DiaChi": {
+          "type": "string"
+        },
+        "Email": {
+          "type": "string"
+        },
+        "GioiTinh": {
+          "type": "string"
+        },
+        "HoTenTK": {
+          "type": "string"
+        },
+        "MaTK": {
+          "type": "string"
+        },
+        "MatKhau": {
+          "type": "string"
+        },
+        "NgaySinh": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "SDT": {
+          "type": "string"
+        },
+        "TenDangNhap": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "MaTK",
+        "HoTenTK",
+        "TenDangNhap",
+        "MatKhau",
+        "GioiTinh",
+        "NgaySinh",
+        "Email",
+        "DiaChi"
+      ],
+      "type": "object"
+    }
+  }
+}
