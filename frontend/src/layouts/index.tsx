@@ -1,16 +1,24 @@
-import { BoxIcon, HomeIcon } from "lucide-react";
-import { Outlet, Link } from "react-router-dom";
+import { BoxIcon, HomeIcon, UsersRoundIcon } from "lucide-react";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 const Layout = () => {
+  const location = useLocation();
+  const { pathname } = location;
+  console.log(pathname);
+
   return (
     <div className="flex">
-      <div className="flex-[0_0_20%] min-h-screen border-r border-gray-300 px-4 py-10 font-medium">
+      <div className="flex-[0_0_20%] max-w-[20%] h-screen sticky top-0 border-r border-gray-300 px-4 py-10 font-medium">
         <h3 className="text-2xl text-center">Admin</h3>
         <ul className="flex flex-col mt-8 gap-4 px-4">
           <li>
             <Link
               to="/"
-              className="flex items-center gap-3 bg-blue-500 text-white rounded-lg px-4 py-2.5"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname === "/"
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
             >
               <HomeIcon className="size-5" />
               Trang chủ
@@ -19,7 +27,11 @@ const Layout = () => {
           <li>
             <Link
               to="/orders"
-              className="flex items-center gap-3  rounded-lg px-4 py-2.5"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname.startsWith("/orders")
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
             >
               <BoxIcon className="size-5" />
               Đơn hàng
@@ -28,10 +40,27 @@ const Layout = () => {
           <li>
             <Link
               to="/products"
-              className="flex items-center gap-3  rounded-lg px-4 py-2.5"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname.startsWith("/products")
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
             >
               <BoxIcon className="size-5" />
               Sản phẩm
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/users"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname.startsWith("/users")
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              <UsersRoundIcon className="size-5" />
+              Khách hàng
             </Link>
           </li>
         </ul>
