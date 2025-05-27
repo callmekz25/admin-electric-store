@@ -1,10 +1,18 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Ellipsis, Edit } from "lucide-react";
+import { ArrowUpDown, Ellipsis } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Link } from "react-router-dom";
-import type IProduct from "@/interfaces/product/product.interface";
-const columns: ColumnDef<IProduct>[] = [
+import type IProductView from "@/interfaces/product/product-view.interface";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+const columns = (
+  onUpdate: (product: IProductView) => void
+): ColumnDef<IProductView>[] => [
   // Row selection
   {
     id: "select",
@@ -169,14 +177,33 @@ const columns: ColumnDef<IProduct>[] = [
     accessorKey: "handle",
     header: "Thao tác",
     cell: ({ row }) => (
-      <div className="font-medium flex items-center gap-2">
-        <Link>
-          <Edit className="size-5" />
-        </Link>
-        <button>
-          <Ellipsis className="size-5" />
-        </button>
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className=" cursor-pointer">
+            <Ellipsis className="size-5" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>
+            <button
+              className=" cursor-pointer w-full flex  items-center justify-start "
+              onClick={() => onUpdate(row.original)}
+            >
+              Cập nhật
+            </button>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link className=" flex items-center  w-full gap-1 cursor-pointer">
+              Chi tiết
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <button className="text-red-500 w-full flex  items-center justify-start cursor-pointer">
+              Xoá
+            </button>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     ),
     meta: {
       label: "Thao tác",

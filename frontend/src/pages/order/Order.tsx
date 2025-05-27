@@ -1,13 +1,15 @@
-import type IOrder from "@/interfaces/order/order.interface";
 import columns from "@/components/order/columns-order";
+import UpdateOrder from "@/components/order/update-order";
 import { DataTable } from "@/components/table/data-table";
+import type IOrderView from "@/interfaces/order/order-view.interface";
+import { useEffect, useState } from "react";
 const Order = () => {
-  const orders: IOrder[] = [
+  const orders: IOrderView[] = [
     {
       MaHD: "HD001",
       NgayLap: "2025-05-25T10:30:00",
       NoiGiao: "123 Nguyễn Văn Cừ, Q.5, TP.HCM",
-      HinhThucThanhToan: true, // true = Chuyển khoản
+      HinhThucThanhToan: true,
       HoTenTK: "Nguyễn Văn A",
       Email: "a.nguyen@example.com",
       SDT: "0901234567",
@@ -19,7 +21,7 @@ const Order = () => {
       MaHD: "HD002",
       NgayLap: "2025-05-24T14:45:00",
       NoiGiao: "45 Lê Lợi, Q.1, TP.HCM",
-      HinhThucThanhToan: false, // false = COD
+      HinhThucThanhToan: false,
       HoTenTK: "Trần Thị B",
       Email: "b.tran@example.com",
       SDT: "0912345678",
@@ -64,12 +66,39 @@ const Order = () => {
       Status: "Chờ xác nhận",
     },
   ];
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<IOrderView | null>(null);
+  useEffect(() => {
+    if (openUpdate) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openUpdate]);
   return (
     <div className="px-8 py-10">
-      Orders
-      <div className=" ">
-        <DataTable columns={columns} data={orders} />
+      <h2 className="text-2xl font-semibold">Danh sách các đơn hàng</h2>
+      <div className="mt-10">
+        <DataTable
+          columns={columns((order) => {
+            setSelectedOrder(order);
+            setOpenUpdate(true);
+          })}
+          data={orders}
+        />
       </div>
+      <UpdateOrder
+        open={openUpdate}
+        onOpenChange={(value) => {
+          setOpenUpdate(value);
+          if (!value) setSelectedOrder(null);
+        }}
+        selectedOrder={selectedOrder!}
+      />
     </div>
   );
 };

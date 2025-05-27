@@ -5,6 +5,7 @@ import { lazy, Suspense } from "react";
 const Home = lazy(() => import("../pages/home/Home"));
 const Order = lazy(() => import("../pages/order/Order"));
 const Product = lazy(() => import("../pages/product/Product"));
+const OrderDetail = lazy(() => import("../pages/order/OrderDetail"));
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -22,6 +23,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<>Loading...</>}>
             <Order />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/orders/detail/o1",
+        element: (
+          <Suspense fallback={<>Loading...</>}>
+            <OrderDetail />
           </Suspense>
         ),
       },

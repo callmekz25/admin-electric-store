@@ -1,8 +1,11 @@
-import type IProduct from "@/interfaces/product/product.interface";
 import { DataTable } from "@/components/table/data-table";
 import columns from "@/components/product/columns-product";
+import { useEffect, useState } from "react";
+import UpdateProduct from "@/components/product/update-product";
+import { Button } from "@/components/ui/button";
+import type IProductView from "@/interfaces/product/product-view.interface";
 const Product = () => {
-  const productList: IProduct[] = [
+  const productList: IProductView[] = [
     {
       MaSP: "SP001",
       TenSP: "Điện thoại iPhone 15 Pro",
@@ -104,13 +107,41 @@ const Product = () => {
       TenNCC: "Keychron",
     },
   ];
+  const [openUpdate, setOpenUpdate] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<IProductView | null>(
+    null
+  );
+  useEffect(() => {
+    if (openUpdate) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [openUpdate]);
   return (
     <div className="px-8 py-10">
-      Product
-      <div className=" ">
-        <DataTable columns={columns} data={productList} />
+      <h2 className="text-2xl font-semibold">Danh sách các sản phẩm</h2>
+      <div className="mt-10">
+        <DataTable
+          columns={columns((product) => {
+            setSelectedProduct(product);
+            setOpenUpdate(true);
+          })}
+          data={productList}
+        />
       </div>
+      <UpdateProduct
+        selectedProduct={selectedProduct!}
+        open={openUpdate}
+        onOpenChange={(value) => {
+          setOpenUpdate(value);
+          if (!value) setSelectedProduct(null);
+        }}
+      />
     </div>
   );
 };

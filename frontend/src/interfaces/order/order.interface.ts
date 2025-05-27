@@ -1,13 +1,9 @@
 interface IOrder {
   MaHD: string;
-  NgayLap: string;
-  NoiGiao: string;
-  HinhThucThanhToan: boolean;
-  HoTenTK: string;
-  Email: string;
-  SDT: string;
-  TotalAmount: number;
-  TotalPrice: number;
-  Status: string;
+  MaTK: string;
+  NgayLap?: string;
+  NgayGiao?: string;
+  NoiGiao?: string;
+  HinhThucThanhToan?: string;
 }
 export default IOrder;

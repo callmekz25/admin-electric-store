@@ -112,7 +112,10 @@ export function DataTable<TData, TValue>({
               <SelectContent>
                 {searchableColumns.map((col) => {
                   return (
-                    <SelectItem value={col.accessorKey as string}>
+                    <SelectItem
+                      key={col.accessorKey as string}
+                      value={col.accessorKey as string}
+                    >
                       {col.meta?.label ?? col.accessorKey}
                     </SelectItem>
                   );
