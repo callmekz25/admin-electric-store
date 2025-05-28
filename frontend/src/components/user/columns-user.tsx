@@ -10,9 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type IUserView from "@/interfaces/user/user-view.interface";
 const columns = (
-  onUpdate: (product: IProductView) => void
-): ColumnDef<IProductView>[] => [
+  onUpdate: (user: IUserView) => void
+): ColumnDef<IUserView>[] => [
   // Row selection
   {
     id: "select",
@@ -38,149 +39,140 @@ const columns = (
   },
   // Column key
   {
-    accessorKey: "MaSP",
+    accessorKey: "MaTK",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Mã sản phẩm
+          Mã tài khoản
           <ArrowUpDown className="h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.MaSP}</h3>,
+    cell: ({ row }) => <h3 className=" text-sm  py-4">{row.original.MaTK}</h3>,
     meta: {
-      label: "Mã sản phẩm",
+      label: "Mã tài khoản",
     },
   },
   {
-    accessorKey: "HinhAnh",
-    header: "Hình ảnh",
-    cell: ({ row }) => {
-      return (
-        <img
-          src={row.original.HinhAnh}
-          alt={row.original.TenSP}
-          className="size-24 object-contain"
-        />
-      );
-    },
-    meta: {
-      label: "Hình ảnh",
-    },
-  },
-  {
-    accessorKey: "TenSP",
+    accessorKey: "HoTenTK",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tên sản phẩm
+          Họ tên
           <ArrowUpDown className=" h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <h3 className=" text-sm   max-w-[200px] truncate">
-        {row.original.TenSP}
+        {row.original.HoTenTK}
       </h3>
     ),
     meta: {
-      label: "Tên sản phẩm",
+      label: "Họ tên",
     },
   },
   {
-    accessorFn: (row) => row.ChiTietSanPham.LoaiSanPham.TenLSP || "",
-    id: "LoaiSP",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Loại sản phẩm
-        <ArrowUpDown className="h-4 w-4" />
-      </Button>
+    accessorKey: "GioiTinh",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Giới tính
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <h3 className=" text-sm   max-w-[200px] truncate">
+        {row.original.GioiTinh}
+      </h3>
     ),
-    cell: ({ getValue }) => <h3 className="text-sm">{getValue<string>()}</h3>,
     meta: {
-      label: "Loại sản phẩm",
+      label: "Giới tính",
+    },
+  },
+  {
+    accessorKey: "Email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm ">{row.original.Email}</h3>,
+    meta: {
+      label: "Email",
+    },
+  },
+  {
+    accessorKey: "SDT",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Số điện thoại
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm ">{row.original.SDT}</h3>,
+    meta: {
+      label: "Số điện thoại",
+    },
+  },
+  {
+    accessorKey: "NgaySinh",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ngày sinh
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm ">{row.original.NgaySinh}</h3>,
+    meta: {
+      label: "Ngày sinh",
+    },
+  },
+  {
+    accessorKey: "DiaChi",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Địa chỉ
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm ">{row.original.DiaChi}</h3>,
+    meta: {
+      label: "Địa chỉ",
     },
   },
 
-  {
-    accessorKey: "SoLuongTon",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Số lượng
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className="text-sm ">{row.original.SoLuongTon}</h3>,
-    filterFn: (row, columnId, filterValue) => {
-      const cellValue = row.getValue(columnId);
-      return Number(cellValue) === Number(filterValue);
-    },
-    meta: {
-      label: "Số lượng",
-    },
-  },
-  {
-    accessorKey: "MucGiamGia",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Mức giảm giá
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <h3 className="text-sm ">{row.original.MucGiamGia ?? "N/A"}</h3>
-    ),
-    filterFn: (row, columnId, filterValue) => {
-      const cellValue = row.getValue(columnId);
-      return Number(cellValue) === Number(filterValue);
-    },
-    meta: {
-      label: "Số lượng",
-    },
-  },
-  {
-    accessorKey: "Gia",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Giá
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <h3 className="text-sm ">{row.original.Gia.toLocaleString()}</h3>
-    ),
-    filterFn: (row, columnId, filterValue) => {
-      const cellValue = row.getValue(columnId);
-      return Number(cellValue) === Number(filterValue);
-    },
-    meta: {
-      label: "Giá",
-    },
-  },
   {
     accessorKey: "handle",
     header: "Thao tác",
@@ -201,13 +193,7 @@ const columns = (
             </button>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link
-              to={`/products/detail/${row.original.MaSP}`}
-              state={{
-                product: row.original,
-              }}
-              className=" flex items-center  w-full gap-1 cursor-pointer"
-            >
+            <Link className=" flex items-center  w-full gap-1 cursor-pointer">
               Chi tiết
             </Link>
           </DropdownMenuItem>

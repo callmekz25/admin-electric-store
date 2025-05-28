@@ -13,6 +13,13 @@ import {
 import { Button } from "../ui/button";
 import { XIcon } from "lucide-react";
 import type IProductView from "@/interfaces/product/product-view.interface";
+import { useGetTypesProduct } from "@/hooks/type-product";
+import Loading from "../ui/loading";
+import type ITypeProduct from "@/interfaces/product/type-product.interface";
+import { useGetSuppliers } from "@/hooks/supplier";
+import type ISupplier from "@/interfaces/supplier/supplier.interface";
+import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
 const UpdateProduct = ({
   selectedProduct,
   open,
@@ -45,6 +52,36 @@ const UpdateProduct = ({
     },
   ];
 
+  const { control, reset } = useForm<IProductView>();
+
+  const {
+    data: types,
+    isLoading: isLoadingTypes,
+    error: errorTypes,
+  } = useGetTypesProduct();
+
+  useEffect(() => {
+    if (selectedProduct) {
+      reset({
+        MaSP: selectedProduct.MaSP ?? "",
+        TenSP: selectedProduct.TenSP ?? "",
+        HinhAnh: selectedProduct.HinhAnh ?? "",
+        SoLuongTon: selectedProduct.SoLuongTon ?? "",
+        MucGiamGia: selectedProduct.MucGiamGia ?? "",
+        Gia: selectedProduct.Gia ?? "",
+        ChiTietSanPham: selectedProduct.ChiTietSanPham ?? "",
+      });
+    }
+  }, [selectedProduct, reset]);
+  const {
+    data: suppliers,
+    isLoading: isLoadingSuppliers,
+    error: errorSuppliers,
+  } = useGetSuppliers();
+  if (isLoadingSuppliers || isLoadingTypes) {
+    return <Loading />;
+  }
+
   return (
     <div className="">
       <>
@@ -75,6 +112,7 @@ const UpdateProduct = ({
                 <XIcon className="size-5" />
               </button>
             </div>
+
             {selectedProduct ? (
               <div className=" grid grid-cols-2 gap-6 mt-10">
                 <div className="flex flex-col gap-6">
@@ -82,125 +120,211 @@ const UpdateProduct = ({
                     <Label htmlFor="MaSP" className=" font-normal opacity-70">
                       Mã sản phẩm
                     </Label>
-                    <Input
-                      id="MaSP"
-                      className="rounded"
-                      value={selectedProduct.MaSP ?? ""}
+                    <Controller
+                      name="MaSP"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          readOnly
+                          id="MaSP"
+                          className="rounded"
+                        />
+                      )}
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="TenSP" className=" font-normal opacity-70">
                       Tên sản phẩm
                     </Label>
-                    <Input id="MaSP" className="rounded" />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
-                      Loại sản phẩm
-                    </Label>
-                    <Select defaultValue="ram">
-                      <SelectTrigger className="w-full rounded">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          <SelectItem value="ram">RAM</SelectItem>
-                          <SelectItem value="cpu">CPU</SelectItem>
-                          <SelectItem value="ssd">SSD</SelectItem>
-                          <SelectItem value="hdd">HDD</SelectItem>
-                          <SelectItem value="monitor">MONITOR</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
-                      Cấu hình chi tiết
-                    </Label>
-                    <Textarea
-                      className=" rounded "
-                      placeholder="Nhập cấu hình sản phẩm."
+                    <Controller
+                      name="TenSP"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} id="TenSP" className="rounded" />
+                      )}
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
-                      Nhà cung cấp
+                    <Label htmlFor="lsp" className=" font-normal opacity-70">
+                      Loại sản phẩm
                     </Label>
-                    <Select defaultValue="ram">
-                      <SelectTrigger className="w-full rounded">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          <SelectItem value="ram">RAM</SelectItem>
-                          <SelectItem value="cpu">CPU</SelectItem>
-                          <SelectItem value="ssd">SSD</SelectItem>
-                          <SelectItem value="hdd">HDD</SelectItem>
-                          <SelectItem value="monitor">MONITOR</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="ChiTietSanPham.MaLoaiSP"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="w-full rounded">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectGroup>
+                              {types &&
+                                types.length > 0 &&
+                                types.map((type: ITypeProduct) => {
+                                  return (
+                                    <SelectItem value={type.MaLoaiSP}>
+                                      {type.TenLSP}
+                                    </SelectItem>
+                                  );
+                                })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="chct" className=" font-normal opacity-70">
+                      Cấu hình chi tiết
+                    </Label>
+                    <Controller
+                      name="ChiTietSanPham.CauHinhChiTiet"
+                      control={control}
+                      render={({ field }) => (
+                        <Textarea
+                          {...field}
+                          className=" rounded "
+                          placeholder="Nhập cấu hình sản phẩm."
+                        />
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="ncc" className=" font-normal opacity-70">
+                      Nhà cung cấp
+                    </Label>
+                    <Controller
+                      name="ChiTietSanPham.NhaCungCap.MaNCC"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="w-full rounded">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectGroup>
+                              {suppliers &&
+                                suppliers.length > 0 &&
+                                suppliers.map((sup: ISupplier) => {
+                                  return (
+                                    <SelectItem value={sup.MaNCC}>
+                                      {sup.TenNCC}
+                                    </SelectItem>
+                                  );
+                                })}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="MauSP" className=" font-normal opacity-70">
                       Màu sắc
                     </Label>
-                    <Select defaultValue="ram">
-                      <SelectTrigger className="w-full rounded">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          {colors.map((color) => {
-                            return (
-                              <SelectItem
-                                key={color.color}
-                                value={color.color}
-                                className="flex items-center gap-3"
-                              >
-                                {color.label}
-                                <button
-                                  className="size-3 rounded-full"
-                                  style={{ backgroundColor: `${color.color}` }}
-                                ></button>
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="ChiTietSanPham.MauSP"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} id="MauSP" className="rounded" />
+                      )}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label
+                      htmlFor="Series_SP"
+                      className=" font-normal opacity-70"
+                    >
                       Series
                     </Label>
-                    <Input className="rounded" id="MaSP" />
+                    <Controller
+                      name="ChiTietSanPham.Series_SP"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} id="Series_SP" className="rounded" />
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label
+                      htmlFor="BaoHanh"
+                      className=" font-normal opacity-70"
+                    >
                       Số năm bảo hành
                     </Label>
-                    <Input type="number" className="rounded" id="MaSP" />
+                    <Controller
+                      name="ChiTietSanPham.BaoHanh"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} id="BaoHanh" className="rounded" />
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label
+                      htmlFor="SoLuongTon"
+                      className=" font-normal opacity-70"
+                    >
                       Số lượng tồn kho
                     </Label>
-                    <Input type="number" className="rounded" id="MaSP" />
+                    <Controller
+                      name="SoLuongTon"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="SoLuongTon"
+                          className="rounded"
+                          type="number"
+                        />
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label
+                      htmlFor="MucGiamGia"
+                      className=" font-normal opacity-70"
+                    >
                       Mức giảm giá
                     </Label>
-                    <Input id="MaSP" className="rounded" type="number" />
+                    <Controller
+                      name="MucGiamGia"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="MucGiamGia"
+                          type="number"
+                          className="rounded"
+                        />
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="Gia" className=" font-normal opacity-70">
                       Giá tiền
                     </Label>
-                    <Input id="MaSP" className="rounded" type="number" />
+                    <Controller
+                      name="Gia"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          id="Gia"
+                          className="rounded"
+                          type="number"
+                        />
+                      )}
+                    />
                   </div>
                   <div className="flex items-center justify-end gap-4">
                     <Button

@@ -1,6 +1,5 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "../ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -17,19 +16,41 @@ import {
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
 import { CalendarIcon, XIcon } from "lucide-react";
-import type IOrder from "@/interfaces/order/order.interface";
-import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
+import type IOrderView from "@/interfaces/order/order-view.interface";
 const UpdateOrder = ({
   selectedOrder,
   open,
   onOpenChange,
 }: {
   open: boolean;
-  selectedOrder: IOrder;
+  selectedOrder: IOrderView;
   onOpenChange: (value: boolean) => void;
 }) => {
-  const [dateCreated, setDateCreated] = useState<Date | undefined>(undefined);
-  const [dateShipping, setDateShipping] = useState<Date | undefined>(undefined);
+  const { control, reset } = useForm<IOrderView>({
+    defaultValues: {
+      MaHD: "",
+      NgayLap: "",
+      NgayGiao: "",
+      NoiGiao: "",
+      HinhThucThanhToan: "",
+      TtVanChuyen: {},
+    },
+  });
+  useEffect(() => {
+    if (selectedOrder) {
+      reset({
+        MaHD: selectedOrder.MaHD ?? "",
+        NgayLap: selectedOrder.NgayLap ?? "",
+        NgayGiao: selectedOrder.NgayGiao ?? "",
+        NoiGiao: selectedOrder.NoiGiao ?? "",
+        HinhThucThanhToan: selectedOrder.HinhThucThanhToan ?? "",
+        TtVanChuyen: selectedOrder.TtVanChuyen ?? {},
+      });
+    }
+  }, [selectedOrder, reset]);
+
   return (
     <div className="">
       <>
@@ -64,124 +85,323 @@ const UpdateOrder = ({
               <div className=" grid grid-cols-2 gap-6 mt-10">
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="MaHD" className=" font-normal opacity-70">
                       Mã đơn hàng
                     </Label>
-                    <Input
-                      id="MaSP"
-                      className="rounded"
-                      value={selectedOrder.MaHD ?? ""}
+                    <Controller
+                      name="MaHD"
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          {...field}
+                          readOnly
+                          id="MaHD"
+                          className="rounded"
+                        />
+                      )}
                     />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="nl" className=" font-normal opacity-70">
                       Ngày lập
                     </Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className=" rounded cursor-pointer"
-                        >
-                          {dateCreated ? (
-                            dateCreated.toLocaleDateString()
-                          ) : (
-                            <span className=" font-normal">Chọn ngày</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={dateCreated}
-                          onSelect={setDateCreated}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <Controller
+                      name="NgayLap"
+                      control={control}
+                      render={({ field }) => {
+                        const date =
+                          field.value instanceof Date
+                            ? field.value
+                            : field.value
+                            ? new Date(field.value)
+                            : null;
+
+                        return (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="rounded cursor-pointer"
+                              >
+                                {date ? (
+                                  date.toLocaleDateString("vi-VN")
+                                ) : (
+                                  <span className="font-normal text-muted-foreground">
+                                    Chọn ngày
+                                  </span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={date!}
+                                onSelect={(selectedDate) => {
+                                  field.onChange(selectedDate ?? undefined);
+                                }}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        );
+                      }}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="ng" className=" font-normal opacity-70">
                       Ngày giao
                     </Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className=" rounded cursor-pointer"
-                        >
-                          {dateShipping ? (
-                            dateShipping.toLocaleDateString()
-                          ) : (
-                            <span className=" font-normal">Chọn ngày</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={dateShipping}
-                          onSelect={setDateShipping}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
+                    <Controller
+                      name="NgayGiao"
+                      control={control}
+                      render={({ field }) => {
+                        const date =
+                          field.value instanceof Date
+                            ? field.value
+                            : field.value
+                            ? new Date(field.value)
+                            : null;
+
+                        return (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="rounded cursor-pointer"
+                              >
+                                {date ? (
+                                  date.toLocaleDateString("vi-VN")
+                                ) : (
+                                  <span className="font-normal text-muted-foreground">
+                                    Chọn ngày
+                                  </span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={date!}
+                                onSelect={(selectedDate) => {
+                                  field.onChange(selectedDate ?? undefined);
+                                }}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        );
+                      }}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label
+                      htmlFor="NoiGiao"
+                      className=" font-normal opacity-70"
+                    >
                       Nơi giao
                     </Label>
-                    <Input className=" rounded" />
+                    <Controller
+                      name="NoiGiao"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} id="NoiGiao" className="rounded" />
+                      )}
+                    />
                   </div>
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="MaSP" className=" font-normal opacity-70">
                       Hình thức thanh toán
                     </Label>
-                    <Select defaultValue="cod">
-                      <SelectTrigger className="w-full rounded">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          <SelectItem value="cod">Tiền mặt</SelectItem>
-                          <SelectItem value="banking">Chuyển khoản</SelectItem>
-                          <SelectItem value="ssd">Trả góp</SelectItem>
-                          <SelectItem value="hdd">Tín dụng</SelectItem>
-                          <SelectItem value="monitor">
-                            Tiền mặt (Trả góp)
-                          </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="HinhThucThanhToan"
+                      control={control}
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger className="w-full rounded">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectGroup>
+                              <SelectItem value="Tiền mặt">Tiền mặt</SelectItem>
+                              <SelectItem value="Chuyển khoản">
+                                Chuyển khoản
+                              </SelectItem>
+                              <SelectItem value="Trả góp">Trả góp</SelectItem>
+                              <SelectItem value="Tín dụng">Tín dụng</SelectItem>
+                              <SelectItem value="Tiền mặt (Trả góp)">
+                                Tiền mặt (Trả góp)
+                              </SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                   </div>
                 </div>
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
-                    <Label htmlFor="MaSP" className=" font-normal opacity-70">
+                    <Label htmlFor="dvvc" className=" font-normal opacity-70">
+                      Đơn vị vận chuyển
+                    </Label>
+                    <Controller
+                      name="TtVanChuyen.TenDonViVC"
+                      control={control}
+                      render={({ field }) => (
+                        <Input {...field} id="dvvc" className=" rounded" />
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="status" className=" font-normal opacity-70">
                       Trạng thái
                     </Label>
-                    <Select defaultValue="cod">
-                      <SelectTrigger className="w-full rounded">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="w-full">
-                        <SelectGroup>
-                          <SelectItem value="cod">Đã xác nhận</SelectItem>
-                          <SelectItem value="banking">Đang giao</SelectItem>
-                          <SelectItem value="ssd">Đã giao</SelectItem>
-                          <SelectItem value="hdd">Giao thất bại</SelectItem>
-                          <SelectItem value="cancel">Đã huỷ</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      name="TtVanChuyen.Status"
+                      control={control}
+                      render={({ field }) => (
+                        <Select defaultValue="cod">
+                          <SelectTrigger className="w-full rounded">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="w-full">
+                            <SelectGroup>
+                              <SelectItem value="cod">Đã xác nhận</SelectItem>
+                              <SelectItem value="banking">Đang giao</SelectItem>
+                              <SelectItem value="ssd">Đã giao</SelectItem>
+                              <SelectItem value="hdd">Giao thất bại</SelectItem>
+                              <SelectItem value="cancel">Đã huỷ</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="ngdk" className=" font-normal opacity-70">
+                      Ngày giao dự kiến
+                    </Label>
+                    <Controller
+                      name="TtVanChuyen.NgayGiaoDuKien"
+                      control={control}
+                      render={({ field }) => {
+                        const date =
+                          field.value instanceof Date
+                            ? field.value
+                            : field.value
+                            ? new Date(field.value)
+                            : null;
+
+                        return (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="rounded cursor-pointer"
+                              >
+                                {date ? (
+                                  date.toLocaleDateString("vi-VN")
+                                ) : (
+                                  <span className="font-normal text-muted-foreground">
+                                    Chọn ngày
+                                  </span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={date!}
+                                onSelect={(selectedDate) => {
+                                  field.onChange(selectedDate ?? undefined);
+                                }}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="ngtt" className=" font-normal opacity-70">
+                      Ngày giao thực tế
+                    </Label>
+                    <Controller
+                      name="TtVanChuyen.NgayGiaoThucTe"
+                      control={control}
+                      render={({ field }) => {
+                        const date =
+                          field.value instanceof Date
+                            ? field.value
+                            : field.value
+                            ? new Date(field.value)
+                            : null;
+
+                        return (
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="rounded cursor-pointer"
+                              >
+                                {date ? (
+                                  date.toLocaleDateString("vi-VN")
+                                ) : (
+                                  <span className="font-normal text-muted-foreground">
+                                    Chọn ngày
+                                  </span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent
+                              className="w-auto p-0"
+                              align="start"
+                            >
+                              <Calendar
+                                mode="single"
+                                selected={date!}
+                                onSelect={(selectedDate) => {
+                                  field.onChange(selectedDate ?? undefined);
+                                }}
+                                disabled={(date) =>
+                                  date > new Date() ||
+                                  date < new Date("1900-01-01")
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                        );
+                      }}
+                    />
                   </div>
 
                   <div className="flex items-center justify-end gap-4">

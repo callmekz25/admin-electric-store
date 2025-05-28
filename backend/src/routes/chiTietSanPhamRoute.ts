@@ -83,7 +83,9 @@ router.get("/", async (_req, res, next) => {
 
     if (s != undefined)
       list = list.filter((ctSanPham) =>
-        ctSanPham.TenLSP.toLowerCase().includes(t.toString().toLowerCase().trim())
+        ctSanPham.Series_SP?.toLowerCase().includes(
+          s.toString().toLowerCase().trim()
+        )
       );
 
     if (m != undefined)
