@@ -77,6 +77,10 @@ router.get("/", async (_req, res, next) => {
             },
           ],
         },
+        {
+          model: DanhGia,
+          as: "DanhSachDanhGia",
+        },
       ],
     });
 
