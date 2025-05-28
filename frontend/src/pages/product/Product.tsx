@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import UpdateProduct from "@/components/product/update-product";
 import { Button } from "@/components/ui/button";
 import type IProductView from "@/interfaces/product/product-view.interface";
+import { useGetProducts } from "@/hooks/product";
 const Product = () => {
   const productList: IProductView[] = [
     {
@@ -111,6 +112,7 @@ const Product = () => {
   const [selectedProduct, setSelectedProduct] = useState<IProductView | null>(
     null
   );
+  const { data, isLoading } = useGetProducts();
   useEffect(() => {
     if (openUpdate) {
       document.body.style.overflow = "hidden";
@@ -122,6 +124,8 @@ const Product = () => {
       document.body.style.overflow = "";
     };
   }, [openUpdate]);
+  console.log(data);
+
   return (
     <div className="px-8 py-10">
       <h2 className="text-2xl font-semibold">Danh sách các sản phẩm</h2>
