@@ -1,0 +1,48 @@
+{
+  "$ref": "#/definitions/TtVanChuyenAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "TtVanChuyenAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "CreatedAt": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "Description": {
+          "type": "string"
+        },
+        "MaHD": {
+          "type": "string"
+        },
+        "MaVC": {
+          "type": "number"
+        },
+        "NgayGiaoDuKien": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "NgayGiaoThucTe": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "Status": {
+          "type": "string"
+        },
+        "TenDonViVC": {
+          "type": "string"
+        },
+        "UpdatedAt": {
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "MaHD",
+        "TenDonViVC",
+        "Status"
+      ],
+      "type": "object"
+    }
+  }
+}

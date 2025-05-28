@@ -1,8 +1,6 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { db } from "../models";
 import { DanhGia } from "../models/DanhGia";
-import { HoaDon } from "../models/HoaDon";
-import { ChiTietHoaDon } from "../models/ChiTietHoaDon";
 import { ChiTietSanPham } from "../models/ChiTietSanPham";
 import { NhaCungCap } from "../models/NhaCungCap";
 import { LoaiSanPham } from "../models/LoaiSanPham";
@@ -23,6 +21,10 @@ const router = Router();
  *           type: string
  *       - in: query
  *         name: ctsp
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: lsp
  *         schema:
  *           type: string
  *       - in: query
@@ -61,7 +63,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { t, ctsp, h, sl, mgg, g } = _req.query;
+  const { t, ctsp, lsp, h, sl, mgg, g } = _req.query;
 
   try {
     let list = await db.SanPham.findAll({
@@ -77,6 +79,10 @@ router.get("/", async (_req, res, next) => {
             },
           ],
         },
+        {
+          model: DanhGia,
+          as: "DanhSachDanhGia",
+        },
       ],
     });
 
@@ -88,6 +94,13 @@ router.get("/", async (_req, res, next) => {
     if (ctsp != undefined)
       list = list.filter((sp) =>
         sp.MaCTSP.toLowerCase().includes(ctsp.toString().toLowerCase().trim())
+      );
+
+    if (lsp != undefined)
+      list = list.filter((sp) =>
+        sp.ChiTietSanPham?.MaLoaiSP.toLowerCase().includes(
+          lsp.toString().toLowerCase().trim()
+        )
       );
 
     if (h != undefined)

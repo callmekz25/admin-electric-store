@@ -2,7 +2,7 @@ import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
 import { HoaDon } from "./HoaDon";
 
-interface TtVanChuyenAttrs {
+export interface TtVanChuyenAttrs {
   MaVC?: number;
   MaHD: string;
   TenDonViVC: string;
