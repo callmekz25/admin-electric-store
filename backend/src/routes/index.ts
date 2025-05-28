@@ -14,7 +14,7 @@ const router = Router();
 router.use("/tai-khoan", taiKhoanRoute);
 router.use("/loai-san-pham", loaiSPRoute);
 router.use("/nha-cung-cap", nccRoute);
-router.use("/chi-tiet-sp", ctspRoute);
+router.use("/chi-tiet-san-pham", ctspRoute);
 router.use("/san-pham", spRoute);
 router.use("/hoa-don", hdRoute);
 router.use("/chi-tiet-hoa-don", cthdRoute);

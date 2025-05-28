@@ -1,5 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { db } from "../models";
+import { NhaCungCap } from "../models/NhaCungCap";
+import { LoaiSanPham } from "../models/LoaiSanPham";
 
 const router = Router();
 
@@ -30,7 +32,7 @@ const router = Router();
  *       - in: query
  *         name: bh
  *         schema:
- *           type: string
+ *           type: number
  *       - in: query
  *         name: m
  *         schema:
@@ -58,7 +60,16 @@ router.get("/", async (_req, res, next) => {
   const { ncc, lsp, chct, s, bh, m } = _req.query;
 
   try {
-    let list = await db.ChiTietSanPham.findAll();
+    let list = await db.ChiTietSanPham.findAll({
+      include: [
+        {
+          model: NhaCungCap,
+        },
+        {
+          model: LoaiSanPham,
+        },
+      ],
+    });
 
     if (ncc != undefined)
       list = list.filter((ctSanPham) =>
@@ -87,6 +98,9 @@ router.get("/", async (_req, res, next) => {
           s.toString().toLowerCase().trim()
         )
       );
+
+    if (bh != undefined)
+      list = list.filter((ctSanPham) => ctSanPham.BaoHanh == Number(bh));
 
     if (m != undefined)
       list = list.filter((ctSanPham) =>
@@ -144,7 +158,16 @@ router.get("/", async (_req, res, next) => {
 router.get("/:maCTSP", async (req, res, next) => {
   const { maCTSP } = req.params;
   try {
-    const item = await db.ChiTietSanPham.findByPk(maCTSP);
+    const item = await db.ChiTietSanPham.findByPk(maCTSP, {
+      include: [
+        {
+          model: NhaCungCap,
+        },
+        {
+          model: LoaiSanPham,
+        },
+      ],
+    });
     if (!item) {
       res.sendStatus(404);
       return;
