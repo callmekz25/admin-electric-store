@@ -51,7 +51,7 @@ const columns = (
         </Button>
       );
     },
-    cell: ({ row }) => <h3 className=" text-sm py-5 ">{row.original.MaHD}</h3>,
+    cell: ({ row }) => <h3 className=" text-sm py-8 ">{row.original.MaHD}</h3>,
     meta: {
       label: "Mã đơn hàng",
     },
@@ -121,14 +121,32 @@ const columns = (
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Ngày đặt
+          Ngày lập
           <ArrowUpDown className=" h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => <h3 className="text-sm ">{row.original.NgayLap}</h3>,
     meta: {
-      label: "Ngày đặt",
+      label: "Ngày lập",
+    },
+  },
+  {
+    accessorKey: "NgayGiao",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ngày giao
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className="text-sm ">{row.original.NgayGiao}</h3>,
+    meta: {
+      label: "Ngày giao",
     },
   },
   {
@@ -182,7 +200,7 @@ const columns = (
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Phương thức thanh toán
+          Hình thức thanh toán
           <ArrowUpDown className=" h-4 w-4" />
         </Button>
       );
@@ -191,7 +209,7 @@ const columns = (
       <h3 className="text-sm ">{row.original.HinhThucThanhToan}</h3>
     ),
     meta: {
-      label: "Phương thưc thanh toán",
+      label: "Hình thức thanh toán",
     },
   },
   {
@@ -233,7 +251,7 @@ const columns = (
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link
-              to={`/orders/detail/${row.original.MaHD}`}
+              to={`/orders/${row.original.MaHD}`}
               state={{
                 order: row.original,
               }}

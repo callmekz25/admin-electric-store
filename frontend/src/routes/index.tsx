@@ -8,6 +8,7 @@ const Product = lazy(() => import("../pages/product/Product"));
 const OrderDetail = lazy(() => import("../pages/order/OrderDetail"));
 const User = lazy(() => import("../pages/user/User"));
 const ProductDetail = lazy(() => import("../pages/product/ProductDetail"));
+const Supplier = lazy(() => import("../pages/supplier/Supplier"));
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/orders/detail/:orderId",
+        path: "/orders/:orderId",
         element: (
           <Suspense fallback={<Loading />}>
             <OrderDetail />
@@ -53,7 +54,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/products/detail/:productId",
+        path: "/suppliers",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Supplier />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/products/:productId",
         element: (
           <Suspense fallback={<Loading />}>
             <ProductDetail />

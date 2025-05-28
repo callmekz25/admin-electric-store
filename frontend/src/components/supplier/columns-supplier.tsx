@@ -10,9 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import type ISupplier from "@/interfaces/supplier/supplier.interface";
 const columns = (
-  onUpdate: (product: IProductView) => void
-): ColumnDef<IProductView>[] => [
+  onUpdate: (supplier: ISupplier) => void
+): ColumnDef<ISupplier>[] => [
   // Row selection
   {
     id: "select",
@@ -38,151 +39,101 @@ const columns = (
   },
   // Column key
   {
-    accessorKey: "MaSP",
+    accessorKey: "MaNCC",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Mã sản phẩm
+          Mã nhà cung cấp
           <ArrowUpDown className="h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.MaSP}</h3>,
+    cell: ({ row }) => <h3 className=" text-sm  py-8">{row.original.MaNCC}</h3>,
     meta: {
-      label: "Mã sản phẩm",
+      label: "Mã nhà cung cấp",
     },
   },
   {
-    accessorKey: "HinhAnh",
-    header: "Hình ảnh",
-    cell: ({ row }) => {
-      return (
-        <img
-          src={
-            row.original.HinhAnh !== ""
-              ? row.original.HinhAnh
-              : "https://t4.ftcdn.net/jpg/06/71/92/37/360_F_671923740_x0zOL3OIuUAnSF6sr7PuznCI5bQFKhI0.jpg"
-          }
-          alt={row.original.TenSP}
-          className="size-20 object-contain"
-        />
-      );
-    },
-    meta: {
-      label: "Hình ảnh",
-    },
-  },
-  {
-    accessorKey: "TenSP",
+    accessorKey: "TenNCC",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Tên sản phẩm
+          Tên nhà cung cấp
           <ArrowUpDown className=" h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
       <h3 className=" text-sm   max-w-[200px] truncate">
-        {row.original.TenSP}
+        {row.original.TenNCC}
       </h3>
     ),
     meta: {
-      label: "Tên sản phẩm",
+      label: "Tên nhà cung cấp",
     },
   },
   {
-    accessorFn: (row) => row.ChiTietSanPham.LoaiSanPham.TenLSP || "",
-    id: "LoaiSP",
+    accessorKey: "DiaChiNCC",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Địa chỉ
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <h3 className=" text-sm   max-w-[200px] truncate">
+        {row.original.DiaChiNCC}
+      </h3>
+    ),
+    meta: {
+      label: "Địa chỉ",
+    },
+  },
+  {
+    accessorKey: "SDT_NCC",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Số điện thoại
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm ">{row.original.SDT_NCC}</h3>,
+    meta: {
+      label: "Số điện thoại",
+    },
+  },
+
+  {
+    accessorFn: (row) => row.DanhSachSanPham.length,
+    id: "SoLuong",
     header: ({ column }) => (
       <Button
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Loại sản phẩm
-        <ArrowUpDown className="h-4 w-4" />
+        Số lượng cung cấp
+        <ArrowUpDown className=" h-4 w-4" />
       </Button>
     ),
-    cell: ({ getValue }) => <h3 className="text-sm">{getValue<string>()}</h3>,
+    cell: ({ getValue }) => <h3 className="text-sm ">{getValue<number>()}</h3>,
     meta: {
-      label: "Loại sản phẩm",
-    },
-  },
-
-  {
-    accessorKey: "SoLuongTon",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Số lượng
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className="text-sm ">{row.original.SoLuongTon}</h3>,
-    filterFn: (row, columnId, filterValue) => {
-      const cellValue = row.getValue(columnId);
-      return Number(cellValue) === Number(filterValue);
-    },
-    meta: {
-      label: "Số lượng",
-    },
-  },
-  {
-    accessorKey: "MucGiamGia",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Mức giảm giá
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <h3 className="text-sm ">{row.original.MucGiamGia ?? "N/A"}</h3>
-    ),
-    filterFn: (row, columnId, filterValue) => {
-      const cellValue = row.getValue(columnId);
-      return Number(cellValue) === Number(filterValue);
-    },
-    meta: {
-      label: "Mức giảm giá",
-    },
-  },
-  {
-    accessorKey: "Gia",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Giá
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <h3 className="text-sm ">{row.original.Gia.toLocaleString()}</h3>
-    ),
-    filterFn: (row, columnId, filterValue) => {
-      const cellValue = row.getValue(columnId);
-      return Number(cellValue) === Number(filterValue);
-    },
-    meta: {
-      label: "Giá",
+      label: "Số lượng cung cấp",
     },
   },
   {
@@ -205,10 +156,7 @@ const columns = (
             </button>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link
-              to={`/products/${row.original.MaSP}`}
-              className=" flex items-center  w-full gap-1 cursor-pointer"
-            >
+            <Link className=" flex items-center  w-full gap-1 cursor-pointer">
               Chi tiết
             </Link>
           </DropdownMenuItem>

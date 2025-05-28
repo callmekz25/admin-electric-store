@@ -51,7 +51,7 @@ const columns = (
         </Button>
       );
     },
-    cell: ({ row }) => <h3 className=" text-sm  py-4">{row.original.MaTK}</h3>,
+    cell: ({ row }) => <h3 className=" text-sm  py-8">{row.original.MaTK}</h3>,
     meta: {
       label: "Mã tài khoản",
     },

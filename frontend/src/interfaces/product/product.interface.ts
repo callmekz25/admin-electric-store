@@ -9,7 +9,7 @@ interface IProduct {
   SoLuongTon: number;
   Gia: number;
   MucGiamGia: number;
-  DanhSachDanhGia: IRate;
+  DanhSachDanhGia: IRate[];
   ChiTietSanPham: IProductDetail;
 }
 export default IProduct;

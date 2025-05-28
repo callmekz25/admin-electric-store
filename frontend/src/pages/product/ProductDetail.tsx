@@ -1,10 +1,14 @@
+import Loading from "@/components/ui/loading";
+import { useGetProductById } from "@/hooks/product";
 import type IProductView from "@/interfaces/product/product-view.interface";
 import type IRate from "@/interfaces/rate/rate.interface";
+import DisplayStarRating from "@/utils/displayStar";
 import { ArrowLeftIcon } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const ProductDetail = () => {
-  const location = useLocation();
-  const product: IProductView = location?.state.product;
+  const { productId } = useParams();
+  const { data, isLoading, error } = useGetProductById(productId!);
+  const product = data as IProductView;
   const navigate = useNavigate();
   const handleBack = () => {
     if (window.history.length > 2) {
@@ -13,7 +17,12 @@ const ProductDetail = () => {
       navigate("/products");
     }
   };
-
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <p>Lỗi!</p>;
+  }
   return (
     <div className="">
       <div className="p-6">
@@ -50,6 +59,14 @@ const ProductDetail = () => {
                 <span className=" font-normal opacity-70 ">Loại sản phẩm</span>
                 <span>
                   {product.ChiTietSanPham.LoaiSanPham.TenLSP ?? "N/A"}
+                </span>
+              </div>
+              <div className="flex items-center text-sm  justify-between">
+                <span className=" font-normal opacity-70 ">
+                  Mô tả loại sản phẩm
+                </span>
+                <span>
+                  {product.ChiTietSanPham.LoaiSanPham.MotaLSP ?? "N/A"}
                 </span>
               </div>
               <div className="flex items-center text-sm  justify-between">
@@ -91,16 +108,18 @@ const ProductDetail = () => {
             </div>
           </div>
           {/* Thông tin nhà cung cấp */}
-          <div className="mx-2 bg-whitep px-6 py-4 bg-white rounded flex-[40%] max-w-[40%]">
+          <div className="mx-2 bg-whitep px-6 py-4 h-fit sticky top-5 bg-white rounded flex-[40%] max-w-[40%]">
             <h4 className=" font-semibold text-lg pb-4 border-b border-gray-200">
               Thông tin của nhà cung cấp
             </h4>
             <div className="flex flex-col gap-4 mt-4">
               <div className="flex items-center text-sm  justify-between">
-                <span className=" font-normal opacity-70 ">
+                <span className=" font-normal opacity-70  ">
                   Mã nhà cung cấp
                 </span>
-                <span>{product.ChiTietSanPham.NhaCungCap.MaNCC ?? "N/A"}</span>
+                <span className="text-[16px] font-semibold">
+                  {product.ChiTietSanPham.NhaCungCap.MaNCC ?? "N/A"}
+                </span>
               </div>
               <div className="flex items-center text-sm  justify-between">
                 <span className=" font-normal opacity-70 ">
@@ -130,17 +149,17 @@ const ProductDetail = () => {
               Danh sách các đánh giá
             </h4>
             <div className="flex flex-col gap-6 mt-4">
-              {product.DanhSachDanhGia && product.DanhSachDanhGia.length > 0 ? (
+              {product.DanhSachDanhGia?.length > 0 ? (
                 product.DanhSachDanhGia.map((rate: IRate) => {
                   return (
                     <div key={rate.MaDG} className="flex flex-col gap-1">
                       <div className="flex items-center gap-4">
-                        <span>{rate.SoSao}</span>
+                        <DisplayStarRating rating={rate.SoSao} />
                         <span className="text-sm opacity-70">
                           {rate.NgayDanhGia}
                         </span>
                       </div>
-                      <p className="text-[15px]">{rate.BinhLuan}</p>
+                      <p className="text-[15px] mt-2">{rate.BinhLuan}</p>
                     </div>
                   );
                 })
@@ -149,7 +168,6 @@ const ProductDetail = () => {
               )}
             </div>
           </div>
-          {/* Thông tin vận chuyển */}
         </div>
       </div>
     </div>

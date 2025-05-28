@@ -1,11 +1,13 @@
+import Loading from "@/components/ui/loading";
+import { useGetOrderById } from "@/hooks/order";
 import type IOrderDetail from "@/interfaces/order/order-detail.interface";
 import type IOrderView from "@/interfaces/order/order-view.interface";
-import type IOrder from "@/interfaces/order/order.interface";
 import { ArrowLeftIcon } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 const OrderDetail = () => {
-  const location = useLocation();
-  const order: IOrderView = location?.state.order;
+  const { orderId } = useParams();
+  const { data, isLoading, error } = useGetOrderById(orderId!);
+  const order = data as IOrderView;
   const navigate = useNavigate();
   const handleBack = () => {
     if (window.history.length > 2) {
@@ -14,10 +16,20 @@ const OrderDetail = () => {
       navigate("/orders");
     }
   };
-  const total = order.DanhSachSanPham.reduce(
-    (sum: number, item: IOrderDetail) => sum + item.SoLuong! * item.SanPham.Gia,
-    0
-  );
+  const total =
+    order &&
+    order.DanhSachSanPham &&
+    order.DanhSachSanPham.reduce(
+      (sum: number, item: IOrderDetail) =>
+        sum + item.SoLuong! * item.SanPham.Gia,
+      0
+    );
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <p>Lỗi!</p>;
+  }
 
   return (
     <div className="">

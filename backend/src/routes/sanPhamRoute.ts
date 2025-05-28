@@ -191,6 +191,10 @@ router.get("/:maSP", async (req, res, next) => {
             },
           ],
         },
+        {
+          model: DanhGia,
+          as: "DanhSachDanhGia",
+        },
       ],
     });
     if (!item) {
