@@ -4,7 +4,7 @@ import { TaiKhoan } from "./TaiKhoan";
 import { ChiTietHoaDon } from "./ChiTietHoaDon";
 import { TtVanChuyen } from "./TtVanChuyen";
 
-interface HoaDonAttrs {
+export interface HoaDonAttrs {
   MaHD: string;
   MaTK: string;
   NgayLap?: Date;

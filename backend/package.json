@@ -6,7 +6,7 @@
     "start": "nodemon src/index.ts",
     "dev": "npx nodemon --watch src --ext ts --exec 'ts-node src/index.ts'",
     "build": "tsc --project tsconfig.json",
-    "gen:schema": "ts-json-schema-generator --path 'src/models/DanhGia.ts' --type DanhGiaAttrs --out src/schemas/DanhGia.json"
+    "gen:schema": "ts-json-schema-generator --path 'src/models/HoaDon.ts' --type HoaDonAttrs --out src/schemas/HoaDon.json"
   },
   "dependencies": {
     "cors": "^2.8.5",

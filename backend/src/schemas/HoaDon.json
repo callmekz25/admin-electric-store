@@ -1,0 +1,36 @@
+{
+  "$ref": "#/definitions/HoaDonAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "HoaDonAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "HinhThucThanhToan": {
+          "type": "string"
+        },
+        "MaHD": {
+          "type": "string"
+        },
+        "MaTK": {
+          "type": "string"
+        },
+        "NgayGiao": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "NgayLap": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "NoiGiao": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "MaHD",
+        "MaTK"
+      ],
+      "type": "object"
+    }
+  }
+}
