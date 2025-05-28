@@ -5,13 +5,14 @@ import nhaCungCapSchema from "../schemas/NhaCungCap.json";
 import loaiSanPhamSchema from "../schemas/LoaiSanPham.json";
 import chiTietSanPhamSchema from "../schemas/ChiTietSanPham.json";
 import sanPhamSchema from "../schemas/SanPham.json";
-import { SanPham } from "../models/SanPham";
+import danhGiaSchema from "../schemas/DanhGia.json";
 
 const taiKhoan = taiKhoanSchema.definitions.TaiKhoanAttrs;
 const nhaCungCap = nhaCungCapSchema.definitions.NhaCungCapAttrs;
 const loaiSanPham = loaiSanPhamSchema.definitions.LoaiSanPhamAttrs;
 const chiTietSanPham = chiTietSanPhamSchema.definitions.ChiTietSanPhamAttrs;
 const sanPham = sanPhamSchema.definitions.SanPhamAttrs;
+const danhGia = danhGiaSchema.definitions.DanhGiaAttrs;
 
 const definition: OAS3Definition = {
   openapi: "3.0.0",
@@ -27,6 +28,7 @@ const definition: OAS3Definition = {
       LoaiSanPham: loaiSanPham,
       ChiTietSanPham: chiTietSanPham,
       SanPham: sanPham,
+      DanhGia: danhGia,
     },
   },
 

@@ -1,0 +1,37 @@
+{
+  "$ref": "#/definitions/DanhGiaAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "DanhGiaAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "BinhLuan": {
+          "type": "string"
+        },
+        "MaDG": {
+          "type": "number"
+        },
+        "MaSP": {
+          "type": "string"
+        },
+        "MaTK": {
+          "type": "string"
+        },
+        "NgayDanhGia": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "SoSao": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "MaDG",
+        "MaSP",
+        "MaTK",
+        "SoSao"
+      ],
+      "type": "object"
+    }
+  }
+}

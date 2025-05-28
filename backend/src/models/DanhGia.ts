@@ -1,9 +1,7 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
-import { SanPham } from "./SanPham";
-import { TaiKhoan } from "./TaiKhoan";
 
-interface DanhGiaAttrs {
+export interface DanhGiaAttrs {
   MaDG: number;
   MaSP: string;
   MaTK: string;

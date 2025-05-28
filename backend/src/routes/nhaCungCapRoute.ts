@@ -255,8 +255,8 @@ router.put("/:maNCC", async (req, res, next) => {
       res.sendStatus(404);
     } else {
       await item.update(NhaCungCap);
-      res.status(200);
-      res.send({ description: "Cập nhật thành công" });
+      //res.status(200);
+      res.status(200).send({ description: "Cập nhật thành công" });
     }
   } catch (err) {
     next(err);
@@ -309,11 +309,11 @@ router.delete("/:maNCC", async (req, res, next) => {
     });
 
     if (deletedCount == 0) {
-      res.send({ description: "Không tìm thấy nhà cung cấp" });
-      res.sendStatus(404);
+      res.status(404).send({ description: "Không tìm thấy nhà cung cấp" });
     } else {
-      res.send({ description: "Xóa thành công, không trả về nội dung" });
-      res.sendStatus(204);
+      res
+        .status(204)
+        .send({ description: "Xóa thành công, không trả về nội dung" });
     }
   } catch (err) {
     next(err);

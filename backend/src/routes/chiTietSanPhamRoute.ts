@@ -293,8 +293,8 @@ router.put("/:maCTSP", async (req, res, next) => {
       res.sendStatus(404);
     } else {
       await item.update(ctSanPham);
-      res.status(200);
-      res.send({ description: "Cập nhật thành công" });
+      //res.status(200);
+      res.status(200).send({ description: "Cập nhật thành công" });
     }
   } catch (err) {
     next(err);
@@ -347,11 +347,11 @@ router.delete("/:maCTSP", async (req, res, next) => {
     });
 
     if (deletedCount == 0) {
-      res.send({ description: "Không tìm thấy chi tiết sản phẩm" });
-      res.sendStatus(404);
+      res.status(404).send({ description: "Không tìm thấy chi tiết sản phẩm" });
     } else {
-      res.send({ description: "Xóa thành công, không trả về nội dung" });
-      res.sendStatus(204);
+      res
+        .status(204)
+        .send({ description: "Xóa thành công, không trả về nội dung" });
     }
   } catch (err) {
     next(err);
