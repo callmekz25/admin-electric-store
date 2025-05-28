@@ -6,7 +6,7 @@
     "start": "nodemon src/index.ts",
     "dev": "npx nodemon --watch src --ext ts --exec 'ts-node src/index.ts'",
     "build": "tsc --project tsconfig.json",
-    "gen:schema": "ts-json-schema-generator --path 'src/models/ChiTietSanPham.ts' --type ChiTietSanPhamAttrs --out src/schemas/ChiTietSanPham.json"
+    "gen:schema": "ts-json-schema-generator --path 'src/models/SanPham.ts' --type SanPhamAttrs --out src/schemas/SanPham.json"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -1,10 +1,4 @@
-import {
-  Router,
-  Request,
-  Response,
-  NextFunction,
-  RequestHandler,
-} from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { db } from "../models";
 import { DanhGia } from "../models/DanhGia";
 import { HoaDon } from "../models/HoaDon";
@@ -170,7 +164,23 @@ router.get("/", async (_req, res, next) => {
 router.get("/:maTK", async (req, res, next) => {
   const { maTK } = req.params;
   try {
-    const item = await db.TaiKhoan.findByPk(maTK);
+    const item = await db.TaiKhoan.findByPk(maTK, {
+      include: [
+        {
+          model: DanhGia,
+        },
+        {
+          model: HoaDon,
+          as: "DanhSachHoaDon",
+          include: [
+            {
+              model: ChiTietHoaDon,
+              as: "DanhSachSanPham",
+            },
+          ],
+        },
+      ],
+    });
     if (!item) {
       res.sendStatus(404);
       return;
