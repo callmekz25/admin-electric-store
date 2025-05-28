@@ -37,27 +37,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMemo, useState } from "react";
+import Loading from "../ui/loading";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const defaultVisibility = useMemo(() => {
     const visibility: VisibilityState = {};
     columns.forEach((col) => {
-      if (typeof col.accessorKey === "string") {
-        visibility[col.accessorKey] = ![
-          "TenNCC",
-          "Email",
-          "HinhThucThanhToan",
-        ].includes(col.accessorKey);
+      const key =
+        typeof col.accessorKey === "string" ? col.accessorKey : col.id;
+      if (key) {
+        visibility[key] = !["Email", "HinhThucThanhToan"].includes(key);
       }
     });
 
@@ -186,6 +187,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
@@ -209,12 +211,13 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Không tìm thấy dữ liệu phù hợp
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
+        {isLoading && <Loading />}
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button
             variant="outline"

@@ -29,29 +29,6 @@ const UpdateProduct = ({
   selectedProduct: IProductView;
   onOpenChange: (value: boolean) => void;
 }) => {
-  const colors = [
-    {
-      label: "Đỏ",
-      color: "red",
-    },
-    {
-      label: "Xanh da trời",
-      color: "blue",
-    },
-    {
-      label: "Đen",
-      color: "black",
-    },
-    {
-      label: "Xám",
-      color: "gray",
-    },
-    {
-      label: "Vàng",
-      color: "yellow",
-    },
-  ];
-
   const { control, reset } = useForm<IProductView>();
 
   const {
