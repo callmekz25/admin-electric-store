@@ -25,6 +25,10 @@ const router = Router();
  *         schema:
  *           type: string
  *       - in: query
+ *         name: tk
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: nl
  *         schema:
  *           type: string
@@ -60,7 +64,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { tk, nl, ngayg, noig, httt } = _req.query;
+  const { hd, tk, nl, ngayg, noig, httt } = _req.query;
 
   try {
     let list = await db.HoaDon.findAll({
@@ -95,6 +99,11 @@ router.get("/", async (_req, res, next) => {
         },
       ],
     });
+
+    if (hd != undefined)
+      list = list.filter((hoaDon) =>
+        hoaDon.MaHD.toLowerCase().includes(hd.toString().toLowerCase().trim())
+      );
 
     if (tk != undefined)
       list = list.filter((hd) =>
