@@ -23,7 +23,8 @@ export class SanPham
   public HinhAnh?: string;
   public SoLuongTon?: number;
   public MucGiamGia?: string;
-  public Gia?: number;
+  public Gia?: number;  
+  public ChiTietSanPham?: ChiTietSanPham
 }
 
 SanPham.init(
