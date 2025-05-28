@@ -78,6 +78,7 @@ router.get("/", async (_req, res, next) => {
           include: [
             {
               model: ChiTietHoaDon,
+              as: "DanhSachSanPham",
             },
           ],
         },
@@ -100,6 +101,14 @@ router.get("/", async (_req, res, next) => {
           .toISOString()
           .toLowerCase()
           .includes(ns.toString().toLowerCase())
+      );
+
+    if (e != undefined)
+      list = list.filter((tk) =>
+        new Date(tk.Email)
+          .toISOString()
+          .toLowerCase()
+          .includes(e.toString().toLowerCase())
       );
 
     if (dc != undefined)

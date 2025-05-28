@@ -1,0 +1,28 @@
+{
+  "$ref": "#/definitions/NhaCungCapAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "NhaCungCapAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "DiaChiNCC": {
+          "type": "string"
+        },
+        "MaNCC": {
+          "type": "string"
+        },
+        "SDT_NCC": {
+          "type": "string"
+        },
+        "TenNCC": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "MaNCC",
+        "TenNCC"
+      ],
+      "type": "object"
+    }
+  }
+}

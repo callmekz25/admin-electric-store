@@ -6,7 +6,7 @@
     "start": "nodemon src/index.ts",
     "dev": "npx nodemon --watch src --ext ts --exec 'ts-node src/index.ts'",
     "build": "tsc --project tsconfig.json",
-    "gen:schema": "ts-json-schema-generator --path 'src/models/TaiKhoan.ts' --type TaiKhoanAttrs --out src/schemas/TaiKhoan.json"
+    "gen:schema": "ts-json-schema-generator --path 'src/models/NhaCungCap.ts' --type NhaCungCapAttrs --out src/schemas/NhaCungCap.json"
   },
   "dependencies": {
     "dotenv": "^16.5.0",

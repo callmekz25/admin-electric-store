@@ -63,4 +63,11 @@ ChiTietSanPham.init(
 );
 
 ChiTietSanPham.belongsTo(NhaCungCap, { foreignKey: "MaNCC" });
+
+NhaCungCap.hasMany(ChiTietSanPham, {
+  foreignKey: "MaNCC",
+  sourceKey: "MaNCC",
+  as: "DanhSachSanPham",
+});
+
 ChiTietSanPham.belongsTo(LoaiSanPham, { foreignKey: "MaLoaiSP" });

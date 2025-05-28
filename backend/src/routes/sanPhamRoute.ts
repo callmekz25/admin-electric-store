@@ -6,10 +6,14 @@ import {
   RequestHandler,
 } from "express";
 import { db } from "../models";
+import { DanhGia } from "../models/DanhGia";
+import { LoaiSanPham } from "../models/LoaiSanPham";
+import { ChiTietSanPham } from "../models/ChiTietSanPham";
+import { NhaCungCap } from "../models/NhaCungCap";
 
 const router = Router();
 
-// tạo 
+// tạo
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const tk = await db.SanPham.create(req.body);
@@ -22,7 +26,25 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 // lấy tất cả
 router.get("/", async (_req, res, next) => {
   try {
-    const list = await db.SanPham.findAll();
+    const list = await db.SanPham.findAll({
+      include: [
+        {
+          model: DanhGia,
+          as: "DanhSachDanhGia",
+        },
+        {
+          model: ChiTietSanPham,
+          include: [
+            {
+              model: LoaiSanPham,
+            },
+            {
+              model: NhaCungCap,
+            },
+          ],
+        },
+      ],
+    });
     res.json(list);
   } catch (err) {
     next(err);
