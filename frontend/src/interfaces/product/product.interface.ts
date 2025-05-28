@@ -1,3 +1,6 @@
+import type IRate from "../rate/rate.interface";
+import type IProductDetail from "./product-detail.interface";
+
 interface IProduct {
   MaSP: string;
   TenSP: string;
@@ -6,5 +9,7 @@ interface IProduct {
   SoLuongTon: number;
   Gia: number;
   MucGiamGia: number;
+  DanhSachDanhGia: IRate;
+  ChiTietSanPham: IProductDetail;
 }
 export default IProduct;

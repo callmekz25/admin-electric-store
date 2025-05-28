@@ -1,6 +1,8 @@
 import columns from "@/components/order/columns-order";
 import UpdateOrder from "@/components/order/update-order";
 import { DataTable } from "@/components/table/data-table";
+import Loading from "@/components/ui/loading";
+import { useGetOrders } from "@/hooks/order";
 import type IOrderView from "@/interfaces/order/order-view.interface";
 import { useEffect, useState } from "react";
 const Order = () => {
@@ -68,6 +70,7 @@ const Order = () => {
   ];
   const [openUpdate, setOpenUpdate] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<IOrderView | null>(null);
+  const { data, isLoading, error } = useGetOrders();
   useEffect(() => {
     if (openUpdate) {
       document.body.style.overflow = "hidden";
@@ -79,6 +82,10 @@ const Order = () => {
       document.body.style.overflow = "";
     };
   }, [openUpdate]);
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="px-8 py-10">
       <h2 className="text-2xl font-semibold">Danh sách các đơn hàng</h2>
@@ -88,7 +95,7 @@ const Order = () => {
             setSelectedOrder(order);
             setOpenUpdate(true);
           })}
-          data={orders}
+          data={data}
         />
       </div>
       <UpdateOrder

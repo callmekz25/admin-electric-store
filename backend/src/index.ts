@@ -6,7 +6,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 import cors, { CorsOptions } from "cors";
 
 const corsOptions: CorsOptions = {
-  origin: ["http://localhost:5173/"], // allow these domains
+  origin: ["http://localhost:5173"], // allow these domains
   methods: ["GET", "POST", "PUT", "DELETE"], // allowed HTTP methods
   allowedHeaders: ["Content-Type", "Authorization"], // allowed headers
   credentials: true, // allow cookies
