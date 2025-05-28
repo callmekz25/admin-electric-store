@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @openapi
- * /ct-san-pham:
+ * /chi-tiet-san-pham:
  *   get:
  *     summary: Lấy danh sách tất cả chi tiết sản phẩm
  *     tags:
@@ -31,6 +31,10 @@ const router = Router();
  *         name: bh
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: m
+ *         schema:
+ *           type: string
  *     responses:
  *       '200':
  *         description: Trả về mảng các chi tiết sản phẩm
@@ -51,22 +55,41 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { t, mt } = _req.query;
+  const { ncc, lsp, chct, s, bh, m } = _req.query;
 
   try {
     let list = await db.ChiTietSanPham.findAll();
 
-    if (t != undefined)
+    if (ncc != undefined)
       list = list.filter((ctSanPham) =>
-        ctSanPham.TenLSP.toLowerCase().includes(
-          t.toString().toLowerCase().trim()
+        ctSanPham.MaNCC.toLowerCase().includes(
+          ncc.toString().toLowerCase().trim()
         )
       );
 
-    if (mt != undefined)
+    if (lsp != undefined)
       list = list.filter((ctSanPham) =>
-        ctSanPham.MotaLSP.toLowerCase().includes(
-          mt.toString().toLowerCase().trim()
+        ctSanPham.MaLoaiSP.toLowerCase().includes(
+          lsp.toString().toLowerCase().trim()
+        )
+      );
+
+    if (chct != undefined)
+      list = list.filter((ctSanPham) =>
+        ctSanPham.CauHinhChiTiet?.toLowerCase().includes(
+          chct.toString().toLowerCase().trim()
+        )
+      );
+
+    if (s != undefined)
+      list = list.filter((ctSanPham) =>
+        ctSanPham.TenLSP.toLowerCase().includes(t.toString().toLowerCase().trim())
+      );
+
+    if (m != undefined)
+      list = list.filter((ctSanPham) =>
+        ctSanPham.MauSP?.toLowerCase().includes(
+          m.toString().toLowerCase().trim()
         )
       );
 
