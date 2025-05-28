@@ -78,6 +78,7 @@ router.get("/", async (_req, res, next) => {
           include: [
             {
               model: ChiTietHoaDon,
+              as: "DanhSachSanPham",
             },
           ],
         },
@@ -86,12 +87,12 @@ router.get("/", async (_req, res, next) => {
 
     if (ht != undefined)
       list = list.filter((tk) =>
-        tk.HoTenTK.toLowerCase().includes(ht.toString().toLowerCase())
+        tk.HoTenTK.toLowerCase().includes(ht.toString().toLowerCase().trim())
       );
 
     if (gt != undefined)
       list = list.filter((tk) =>
-        tk.GioiTinh.toLowerCase().includes(gt.toString().toLowerCase())
+        tk.GioiTinh.toLowerCase().includes(gt.toString().toLowerCase().trim())
       );
 
     if (ns != undefined)
@@ -99,17 +100,25 @@ router.get("/", async (_req, res, next) => {
         new Date(tk.NgaySinh)
           .toISOString()
           .toLowerCase()
-          .includes(ns.toString().toLowerCase())
+          .includes(ns.toString().toLowerCase().trim())
+      );
+
+    if (e != undefined)
+      list = list.filter((tk) =>
+        new Date(tk.Email)
+          .toISOString()
+          .toLowerCase()
+          .includes(e.toString().toLowerCase().trim())
       );
 
     if (dc != undefined)
       list = list.filter((tk) =>
-        tk.DiaChi.toLowerCase().includes(dc.toString().toLowerCase())
+        tk.DiaChi.toLowerCase().includes(dc.toString().toLowerCase().trim())
       );
 
     if (sdt != undefined)
       list = list.filter((tk) =>
-        tk.SDT?.toLowerCase().includes(sdt.toString().toLowerCase())
+        tk.SDT?.toLowerCase().includes(sdt.toString().toLowerCase().trim())
       );
 
     res.json(list);
