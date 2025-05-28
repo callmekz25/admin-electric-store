@@ -1,14 +1,23 @@
 import express from "express";
-import { db } from "./models";
 import routes from "./routes";
 import swaggerUi from "swagger-ui-express";
 import swaggerOptions from "./swagger/swaggerOptions";
 import swaggerJsdoc from "swagger-jsdoc";
-import swaggerDocument from "./swagger/swagger.json";
+import cors, { CorsOptions } from "cors";
+
+const corsOptions: CorsOptions = {
+  origin: ["http://localhost:5173/"], // allow these domains
+  methods: ["GET", "POST", "PUT", "DELETE"], // allowed HTTP methods
+  allowedHeaders: ["Content-Type", "Authorization"], // allowed headers
+  credentials: true, // allow cookies
+};
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// 2) Apply CORS middleware globally
+app.use(cors(corsOptions));
 
 // simple health-check
 app.get("/", (_req: any, res: any) => res.send("OKE"));
