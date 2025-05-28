@@ -16,6 +16,10 @@ const router = Router();
  *       - SanPham
  *     parameters:
  *       - in: query
+ *         name: msp
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: t
  *         schema:
  *           type: string
@@ -63,7 +67,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { t, ctsp, lsp, h, sl, mgg, g } = _req.query;
+  const { msp, t, ctsp, lsp, h, sl, mgg, g } = _req.query;
 
   try {
     let list = await db.SanPham.findAll({
@@ -85,6 +89,11 @@ router.get("/", async (_req, res, next) => {
         },
       ],
     });
+
+    if (msp != undefined)
+      list = list.filter((sp) =>
+        sp.MaSP.toLowerCase().includes(msp.toString().toLowerCase().trim())
+      );
 
     if (t != undefined)
       list = list.filter((sp) =>
