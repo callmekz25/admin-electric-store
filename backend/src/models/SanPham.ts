@@ -3,7 +3,7 @@ import { sequelize } from "../config/db.config";
 import { ChiTietSanPham } from "./ChiTietSanPham";
 import { DanhGia } from "./DanhGia";
 
-interface SanPhamAttrs {
+export interface SanPhamAttrs {
   MaSP: string;
   TenSP: string;
   MaCTSP: string;

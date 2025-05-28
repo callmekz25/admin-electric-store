@@ -1,0 +1,38 @@
+{
+  "$ref": "#/definitions/SanPhamAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "SanPhamAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "Gia": {
+          "type": "number"
+        },
+        "HinhAnh": {
+          "type": "string"
+        },
+        "MaCTSP": {
+          "type": "string"
+        },
+        "MaSP": {
+          "type": "string"
+        },
+        "MucGiamGia": {
+          "type": "string"
+        },
+        "SoLuongTon": {
+          "type": "number"
+        },
+        "TenSP": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "MaSP",
+        "TenSP",
+        "MaCTSP"
+      ],
+      "type": "object"
+    }
+  }
+}

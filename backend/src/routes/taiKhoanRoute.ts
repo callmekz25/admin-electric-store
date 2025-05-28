@@ -1,10 +1,4 @@
-import {
-  Router,
-  Request,
-  Response,
-  NextFunction,
-  RequestHandler,
-} from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { db } from "../models";
 import { DanhGia } from "../models/DanhGia";
 import { HoaDon } from "../models/HoaDon";
@@ -105,10 +99,7 @@ router.get("/", async (_req, res, next) => {
 
     if (e != undefined)
       list = list.filter((tk) =>
-        new Date(tk.Email)
-          .toISOString()
-          .toLowerCase()
-          .includes(e.toString().toLowerCase().trim())
+        tk.Email.toLowerCase().includes(e.toString().toLowerCase().trim())
       );
 
     if (dc != undefined)
@@ -170,7 +161,23 @@ router.get("/", async (_req, res, next) => {
 router.get("/:maTK", async (req, res, next) => {
   const { maTK } = req.params;
   try {
-    const item = await db.TaiKhoan.findByPk(maTK);
+    const item = await db.TaiKhoan.findByPk(maTK, {
+      include: [
+        {
+          model: DanhGia,
+        },
+        {
+          model: HoaDon,
+          as: "DanhSachHoaDon",
+          include: [
+            {
+              model: ChiTietHoaDon,
+              as: "DanhSachSanPham",
+            },
+          ],
+        },
+      ],
+    });
     if (!item) {
       res.sendStatus(404);
       return;
@@ -296,8 +303,8 @@ router.put("/:maTK", async (req, res, next) => {
       res.sendStatus(404);
     } else {
       await item.update(taiKhoan);
-      res.status(200);
-      res.send({ description: "Cập nhật thành công" });
+      //res.status(200);
+      res.status(200).send({ description: "Cập nhật thành công" });
     }
   } catch (err) {
     next(err);
@@ -350,11 +357,11 @@ router.delete("/:maTK", async (req, res, next) => {
     });
 
     if (deletedCount == 0) {
-      res.send({ description: "Không tìm thấy tài khoản" });
-      res.sendStatus(404);
+      res.status(404).send({ description: "Không tìm thấy tài khoản" });
     } else {
-      res.send({ description: "Xóa thành công, không trả về nội dung" });
-      res.sendStatus(204);
+      res
+        .status(204)
+        .send({ description: "Xóa thành công, không trả về nội dung" });
     }
   } catch (err) {
     next(err);

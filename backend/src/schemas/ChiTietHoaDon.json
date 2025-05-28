@@ -1,0 +1,28 @@
+{
+  "$ref": "#/definitions/ChiTietHoaDonAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "ChiTietHoaDonAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "GiaBan": {
+          "type": "number"
+        },
+        "MaHD": {
+          "type": "string"
+        },
+        "MaSP": {
+          "type": "string"
+        },
+        "SoLuong": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "MaHD",
+        "MaSP"
+      ],
+      "type": "object"
+    }
+  }
+}

@@ -11,10 +11,14 @@ export const dbConfig = {
     host: process.env.DB_HOST || "localhost",
     port: Number(process.env.DB_PORT) || 1433,
     dialect: "mssql" as Dialect,
+    timezone: "+07:00",
     dialectOptions: {
       options: {
         encrypt: true,
         enableArithAbort: true,
+        useUTC: false, // for reading from DB
+        dateStrings: false, // let DATE come back as JS Date
+        typeCast: true,
       },
     },
   },
