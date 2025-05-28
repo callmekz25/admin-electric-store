@@ -6,7 +6,6 @@ import {
   RequestHandler,
 } from "express";
 import { db } from "../models";
-import { LoaiSanPham } from "../models/LoaiSanPham";
 import { ChiTietSanPham } from "../models/ChiTietSanPham";
 
 const router = Router();
@@ -65,17 +64,19 @@ router.get("/", async (_req, res, next) => {
 
     if (t != undefined)
       list = list.filter((ncc) =>
-        ncc.TenNCC.toLowerCase().includes(t.toString().toLowerCase())
+        ncc.TenNCC.toLowerCase().includes(t.toString().toLowerCase().trim())
       );
 
     if (dc != undefined)
       list = list.filter((ncc) =>
-        ncc.DiaChiNCC?.toLowerCase().includes(dc.toString().toLowerCase())
+        ncc.DiaChiNCC?.toLowerCase().includes(
+          dc.toString().toLowerCase().trim()
+        )
       );
 
     if (sdt != undefined)
       list = list.filter((ncc) =>
-        ncc.SDT_NCC?.toLowerCase().includes(sdt.toString().toLowerCase())
+        ncc.SDT_NCC?.toLowerCase().includes(sdt.toString().toLowerCase().trim())
       );
 
     res.json(list);

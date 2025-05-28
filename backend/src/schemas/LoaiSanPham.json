@@ -1,0 +1,26 @@
+{
+  "$ref": "#/definitions/LoaiSanPhamAttrs",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "definitions": {
+    "LoaiSanPhamAttrs": {
+      "additionalProperties": false,
+      "properties": {
+        "MaLoaiSP": {
+          "type": "string"
+        },
+        "MotaLSP": {
+          "type": "string"
+        },
+        "TenLSP": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "MaLoaiSP",
+        "TenLSP",
+        "MotaLSP"
+      ],
+      "type": "object"
+    }
+  }
+}
