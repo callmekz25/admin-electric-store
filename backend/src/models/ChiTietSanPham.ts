@@ -62,5 +62,5 @@ ChiTietSanPham.init(
   }
 );
 
-ChiTietSanPham.belongsTo(NhaCungCap, { foreignKey: "MaNCC", as: "ncc" });
-ChiTietSanPham.belongsTo(LoaiSanPham, { foreignKey: "MaLoaiSP", as: "loai" });
+ChiTietSanPham.belongsTo(NhaCungCap, { foreignKey: "MaNCC" });
+ChiTietSanPham.belongsTo(LoaiSanPham, { foreignKey: "MaLoaiSP" });

@@ -1,6 +1,7 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import { sequelize } from "../config/db.config";
 import { ChiTietSanPham } from "./ChiTietSanPham";
+import { DanhGia } from "./DanhGia";
 
 interface SanPhamAttrs {
   MaSP: string;
@@ -52,4 +53,10 @@ SanPham.init(
   }
 );
 
-SanPham.belongsTo(ChiTietSanPham, { foreignKey: "MaCTSP", as: "chiTiet" });
+SanPham.belongsTo(ChiTietSanPham, { foreignKey: "MaCTSP" });
+DanhGia.belongsTo(SanPham, { foreignKey: "MaSP" });
+SanPham.hasMany(DanhGia, {
+  foreignKey: "MaSP",
+  sourceKey: "MaSP",
+  as: "DanhSachDanhGia",
+});

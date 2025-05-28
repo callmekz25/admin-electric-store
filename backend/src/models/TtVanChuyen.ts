@@ -57,5 +57,3 @@ TtVanChuyen.init(
     timestamps: false,
   }
 );
-
-TtVanChuyen.belongsTo(HoaDon, { foreignKey: "MaHD", as: "hoaDon" });
