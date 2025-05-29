@@ -245,6 +245,8 @@ router.get("/:maSP", async (req, res, next) => {
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // await db.ChiTietSanPham.create(req.body["ChiTietSanPham"]);
+
     const sp = await db.SanPham.create(req.body, {
       include: [
         {
@@ -260,9 +262,9 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
         },
       ],
     });
-    await db.ChiTietSanPham.create(req.body["ChiTietSanPham"]);
     res.status(201).json(sp);
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });
