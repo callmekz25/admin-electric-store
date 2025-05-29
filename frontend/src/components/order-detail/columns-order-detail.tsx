@@ -2,7 +2,6 @@ import { type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,10 +11,8 @@ import {
 import type IOrderDetail from "@/interfaces/order/order-detail.interface";
 const columns = ({
   onUpdate,
-  onDelete,
 }: {
   onUpdate: (order: IOrderDetail) => void;
-  onDelete: (order: IOrderDetail) => void;
 }): ColumnDef<IOrderDetail>[] => [
   // Row selection
   {
@@ -92,7 +89,9 @@ const columns = ({
         </Button>
       );
     },
-    cell: ({ row }) => <h3 className=" text-sm py-8 ">{row.original.MaHD}</h3>,
+    cell: ({ row }) => (
+      <h3 className=" text-sm py-8 ">{row.original.SoLuong}</h3>
+    ),
     meta: {
       label: "Số lượng",
     },
@@ -112,7 +111,9 @@ const columns = ({
       );
     },
     cell: ({ row }) => (
-      <h3 className=" text-sm py-8 ">{row.original.GiaBan ?? "N/A"}</h3>
+      <h3 className=" text-sm py-8 ">
+        {row.original.GiaBan?.toLocaleString() ?? "N/A"}
+      </h3>
     ),
     meta: {
       label: "Giá bán",

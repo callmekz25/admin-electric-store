@@ -11,9 +11,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type IOrderView from "@/interfaces/order/order-view.interface";
 import type IOrderDetail from "@/interfaces/order/order-detail.interface";
-const columns = (
-  onUpdate: (order: IOrderView) => void
-): ColumnDef<IOrderView>[] => [
+const columns = ({
+  onUpdate,
+  onDelete,
+}: {
+  onUpdate: (order: IOrderView) => void;
+  onDelete: (order: IOrderView) => void;
+}): ColumnDef<IOrderView>[] => [
   // Row selection
   {
     id: "select",
@@ -261,7 +265,10 @@ const columns = (
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <button className="text-red-500 w-full flex  items-center justify-start cursor-pointer">
+            <button
+              onClick={() => onDelete(row.original)}
+              className="text-red-500 w-full flex  items-center justify-start cursor-pointer"
+            >
               Xoá
             </button>
           </DropdownMenuItem>

@@ -81,7 +81,7 @@ const OrderDetail = () => {
               </div>
             </div>
           </div>
-          {/* Thông tin vận chuyển */}
+
           <div className="mx-2 bg-whitep px-6 py-4 bg-white rounded flex-[40%] max-w-[40%]">
             <h4 className=" font-semibold text-lg pb-4 border-b border-gray-200">
               Thông tin của khách hàng
@@ -121,7 +121,7 @@ const OrderDetail = () => {
               Thông tin các sản phẩm
             </h4>
             <div className="flex flex-col gap-6 mt-4">
-              {order?.DanhSachSanPham?.length > 0 &&
+              {order?.DanhSachSanPham?.length > 0 ? (
                 order.DanhSachSanPham.map((product: IOrderDetail) => {
                   return (
                     <div
@@ -133,7 +133,7 @@ const OrderDetail = () => {
                           src={
                             product.SanPham.HinhAnh !== ""
                               ? product.SanPham.HinhAnh
-                              : "https://genk.mediacdn.vn/139269124445442048/2023/6/6/macbook-air-15-inch-6-16860313066961124865501-1686038279968-168603828012719897017.jpg"
+                              : "https://t4.ftcdn.net/jpg/06/71/92/37/360_F_671923740_x0zOL3OIuUAnSF6sr7PuznCI5bQFKhI0.jpg"
                           }
                           alt={product.SanPham.TenSP}
                           className="size-18 object-cover"
@@ -161,7 +161,10 @@ const OrderDetail = () => {
                       </div>
                     </div>
                   );
-                })}
+                })
+              ) : (
+                <span>Chưa có sản phẩm nào</span>
+              )}
             </div>
           </div>
           {/* Thông tin vận chuyển */}
@@ -174,23 +177,23 @@ const OrderDetail = () => {
                 <span className=" font-normal opacity-70 ">
                   Đơn vị vận chuyển
                 </span>
-                <span>{order.TtVanChuyen.TenDonViVC}</span>
+                <span>{order?.TtVanChuyen?.TenDonViVC ?? "N/A"}</span>
               </div>
               <div className="flex items-center text-sm  justify-between">
                 <span className=" font-normal opacity-70 ">
                   Ngày giao dự kiến
                 </span>
-                <span>{order.TtVanChuyen.NgayGiaoDuKien ?? "N/A"}</span>
+                <span>{order?.TtVanChuyen?.NgayGiaoDuKien ?? "N/A"}</span>
               </div>
               <div className="flex items-center text-sm  justify-between">
                 <span className=" font-normal opacity-70 ">Trạng thái</span>
-                <span>{order.TtVanChuyen.Status ?? "Đang giao"}</span>
+                <span>{order?.TtVanChuyen?.Status ?? "Đang giao"}</span>
               </div>
               <div className="flex items-center text-sm  justify-between">
                 <span className=" font-normal opacity-70 ">
                   Ngày giao hoàn thành
                 </span>
-                <span>{order.TtVanChuyen.NgayGiaoThucTe ?? "N/A"}</span>
+                <span>{order?.TtVanChuyen?.NgayGiaoThucTe ?? "N/A"}</span>
               </div>
             </div>
           </div>

@@ -196,11 +196,6 @@ const columns = ({
             </button>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link className=" flex items-center  w-full gap-1 cursor-pointer">
-              Chi tiết
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
             <button
               onClick={() => onDelete(row.original)}
               className="text-red-500 w-full flex  items-center justify-start cursor-pointer"

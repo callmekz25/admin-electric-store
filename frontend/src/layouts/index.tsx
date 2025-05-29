@@ -16,7 +16,7 @@ const Layout = () => {
     <div className="flex">
       <div className="flex-[0_0_18%] max-w-[18%] h-screen sticky top-0 border-r border-gray-300 px-4 py-10 font-medium">
         <h3 className="text-2xl text-center">Admin</h3>
-        <ul className="flex flex-col mt-8 gap-4 px-4">
+        <ul className="flex flex-col mt-8 gap-6 px-4">
           <li>
             <Link
               to="/"

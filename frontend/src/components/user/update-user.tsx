@@ -129,6 +129,7 @@ const UpdateUser = ({
                           {...field}
                           readOnly
                           id="MaTK"
+                          disabled
                           className="rounded"
                         />
                       )}

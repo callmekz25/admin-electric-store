@@ -31,9 +31,11 @@ import {
 import { CalendarIcon, PlusIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import AddOrder from "@/components/order/add-order";
+import DeleteOrder from "@/components/order/delete-order";
 const Order = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<IOrderView | null>(null);
   const [advancedFilter, setAdvancedFilter] = useState<boolean>(false);
   const [filterQuery, setFilterQuery] = useState<IOrderFilterRequest>();
@@ -60,7 +62,7 @@ const Order = () => {
   };
   return (
     <div className="px-8 py-10">
-      <h2 className="text-2xl font-semibold">Danh sách các đơn hàng</h2>
+      <h2 className="text-2xl font-semibold">Danh sách các hoá đơn</h2>
       <div className="mt-10">
         <div className="flex items-center gap-3">
           <Button
@@ -82,14 +84,25 @@ const Order = () => {
         {error && <span>{error.message}</span>}
         <DataTable
           isLoading={isLoading}
-          columns={columns((order) => {
-            setSelectedOrder(order);
-            setOpenUpdate(true);
+          columns={columns({
+            onUpdate: (order) => {
+              setSelectedOrder(order);
+              setOpenUpdate(true);
+            },
+            onDelete: (order) => {
+              setSelectedOrder(order);
+              setOpenDelete(true);
+            },
           })}
           data={data ?? []}
         />
       </div>
       <AddOrder open={openAdd} onOpenChange={setOpenAdd} />
+      <DeleteOrder
+        open={openDelete}
+        onOpenChange={setOpenDelete}
+        selectedOrder={selectedOrder!}
+      />
       <UpdateOrder
         open={openUpdate}
         onOpenChange={(value) => {
