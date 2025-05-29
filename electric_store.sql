@@ -3,9 +3,16 @@
 
 DROP DATABASE BAITAPNHOM;
 
+use master
+CREATE LOGIN my_admin
+WITH PASSWORD = '1';
+
 -- Tạo cơ sở dữ liệu
 CREATE DATABASE BAITAPNHOM;
 GO
+
+CREATE USER my_admin FOR LOGIN my_admin;
+ALTER ROLE db_owner ADD MEMBER my_admin;
 
 -- Sử dụng cơ sở dữ liệu
 USE BAITAPNHOM;
@@ -89,7 +96,7 @@ CREATE TABLE DANHGIA (
     MaTK VARCHAR(10) NOT NULL,
     SoSao INT CHECK (SoSao BETWEEN 1 AND 5),
     BinhLuan NVARCHAR(500),
-    NgayDanhGia DATETIME DEFAULT GETDATE(),
+    NgayDanhGia DATETIMEOFFSET DEFAULT GETDATE(),
     FOREIGN KEY (MaSP) REFERENCES SANPHAM(MaSP),
     FOREIGN KEY (MaTK) REFERENCES TAIKHOAN(MaTK)
 );
@@ -103,8 +110,8 @@ CREATE TABLE TTVANCHUYEN (
     Description NVARCHAR(255),    -- Mô tả chi tiết trạng thái (tuỳ chọn)
     NgayGiaoDuKien DATE NULL,     -- Ngày giao dự kiến (nếu có)
     NgayGiaoThucTe DATE NULL,     -- Ngày giao thực tế (nếu có)
-    CreatedAt DATETIME DEFAULT GETDATE(), -- Thời điểm cập nhật trạng thái
-    UpdatedAt DATETIME DEFAULT GETDATE()
+    CreatedAt DATETIMEOFFSET DEFAULT GETDATE(), -- Thời điểm cập nhật trạng thái
+    UpdatedAt DATETIMEOFFSET DEFAULT GETDATE()
 );
 
 -- Ràng buộc khóa ngoại bổ sung
