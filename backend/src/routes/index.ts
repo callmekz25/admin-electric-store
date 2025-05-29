@@ -8,6 +8,7 @@ import hdRoute from "./hoaDonRoute";
 import cthdRoute from "./chiTietHoaDonRoute";
 import dgRoute from "./danhGiaRoute";
 import vcRoute from "./ttVanChuyenRoute";
+import queryRoute from "./queryRoute";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/hoa-don", hdRoute);
 router.use("/chi-tiet-hoa-don", cthdRoute);
 router.use("/danh-gia", dgRoute);
 router.use("/van-chuyen", vcRoute);
+router.use("/query", queryRoute);
 
 export default router;

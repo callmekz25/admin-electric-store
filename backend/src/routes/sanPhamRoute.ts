@@ -316,7 +316,21 @@ router.put("/:maSP", async (req, res, next) => {
   try {
     const { maSP } = req.params;
     const SanPham = req.body;
-    let item = await db.SanPham.findByPk(maSP);
+    let item = await db.SanPham.findByPk(maSP, {
+      include: [
+        {
+          model: ChiTietSanPham,
+          include: [
+            {
+              model: NhaCungCap,
+            },
+            {
+              model: LoaiSanPham,
+            },
+          ],
+        },
+      ],
+    });
 
     if (!item) {
       res.sendStatus(404);
