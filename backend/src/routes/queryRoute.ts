@@ -9,21 +9,21 @@ const router = Router();
  *   post:
  *     summary: Tạo loại sản phẩm mới
  *     tags:
- *       - LoaiSanPham
+ *       - QueryString
  *     requestBody:
  *       description: The account data to create
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/LoaiSanPham'
+ *             $ref: '#/components/schemas/QueryString'
  *     responses:
  *       '201':
  *         description: Account created successfully
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/LoaiSanPham'
+ *               $ref: '#/components/schemas/QueryString'
  *       '400':
  *         description: Bad request — validation failed
  *         content:
@@ -45,11 +45,11 @@ const router = Router();
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const loaiSP = await db.sequelize.query(req.body);
-    res.status(201).json(loaiSP);
+    const result = await db.sequelize.query(req.body);
+    res.status(201).json(result);
   } catch (err) {
     next(err);
   }
 });
 
-export default router
+export default router;

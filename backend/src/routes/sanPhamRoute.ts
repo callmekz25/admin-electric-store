@@ -249,7 +249,22 @@ router.get("/:maSP", async (req, res, next) => {
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const sp = await db.SanPham.create(req.body);
+    const sp = await db.SanPham.create(req.body, {
+      include: [
+        {
+          model: ChiTietSanPham,
+          include: [
+            {
+              model: NhaCungCap,
+            },
+            {
+              model: LoaiSanPham,
+            },
+          ],
+        },
+      ],
+    });
+    await db.ChiTietSanPham.create(req.body["ChiTietSanPham"]);
     res.status(201).json(sp);
   } catch (err) {
     next(err);
@@ -336,6 +351,9 @@ router.put("/:maSP", async (req, res, next) => {
       res.sendStatus(404);
     } else {
       await item.update(SanPham);
+
+      await item.ChiTietSanPham?.update(SanPham["ChiTietSanPham"]);
+
       //res.status(200);
       res.status(200).json(item);
     }
