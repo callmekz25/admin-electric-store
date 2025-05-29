@@ -345,7 +345,7 @@ router.put("/:maHD", async (req, res, next) => {
     } else {
       await item.update(HoaDon);
       //res.status(200);
-      res.status(200).send({ description: "Cập nhật thành công" });
+      res.status(200).json(item);
     }
   } catch (err) {
     next(err);
