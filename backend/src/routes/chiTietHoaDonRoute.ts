@@ -17,6 +17,10 @@ const router = Router();
  *       - ChiTietHoaDon
  *     parameters:
  *       - in: query
+ *         name: hd
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: sp
  *         schema:
  *           type: string
@@ -48,7 +52,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { sp, sl, g } = _req.query;
+  const { hd, sp, sl, g } = _req.query;
 
   try {
     let list = await db.ChiTietHoaDon.findAll({
@@ -64,14 +68,19 @@ router.get("/", async (_req, res, next) => {
       ],
     });
 
-    if (sp != undefined)
-      list = list.filter((tk) =>
-        tk.MaSP.toLowerCase().includes(sp.toString().toLowerCase().trim())
+    if (hd != undefined)
+      list = list.filter((cthd) =>
+        cthd.MaHD.toLowerCase().includes(hd.toString().toLowerCase().trim())
       );
 
-    if (sl != undefined) list = list.filter((tk) => tk.SoLuong == Number(sl));
+    if (sp != undefined)
+      list = list.filter((cthd) =>
+        cthd.MaSP.toLowerCase().includes(sp.toString().toLowerCase().trim())
+      );
 
-    if (g != undefined) list = list.filter((tk) => tk.GiaBan == Number(g));
+    if (sl != undefined) list = list.filter((cthd) => cthd.SoLuong == Number(sl));
+
+    if (g != undefined) list = list.filter((cthd) => cthd.GiaBan == Number(g));
 
     res.json(list);
   } catch (err) {
@@ -186,8 +195,8 @@ router.get("/:maHD", async (req, res, next) => {
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tk = await db.ChiTietHoaDon.create(req.body);
-    res.status(201).json(tk);
+    const cthd = await db.ChiTietHoaDon.create(req.body);
+    res.status(201).json(cthd);
   } catch (err) {
     next(err);
   }

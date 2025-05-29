@@ -12,6 +12,10 @@ const router = Router();
  *       - DanhGia
  *     parameters:
  *       - in: query
+ *         name: dg
+ *         schema:
+ *           type: number
+ *       - in: query
  *         name: sp
  *         schema:
  *           type: string
@@ -51,10 +55,13 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { sp, tk, s, bl, ndg } = _req.query;
+  const { dg, sp, tk, s, bl, ndg } = _req.query;
 
   try {
     let list = await db.DanhGia.findAll();
+
+    if (dg != undefined)
+      list = list.filter((danhGia) => danhGia.MaDG == Number(dg));
 
     if (sp != undefined)
       list = list.filter((danhGia) =>

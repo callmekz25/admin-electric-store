@@ -12,6 +12,10 @@ const router = Router();
  *       - LoaiSanPham
  *     parameters:
  *       - in: query
+ *         name: lsp
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: t
  *         schema:
  *           type: string
@@ -39,10 +43,17 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { t, mt } = _req.query;
+  const { lsp, t, mt } = _req.query;
 
   try {
     let list = await db.LoaiSanPham.findAll();
+
+    if (lsp != undefined)
+      list = list.filter((loaiSP) =>
+        loaiSP.TenLSP.toLowerCase().includes(
+          lsp.toString().toLowerCase().trim()
+        )
+      );
 
     if (t != undefined)
       list = list.filter((loaiSP) =>

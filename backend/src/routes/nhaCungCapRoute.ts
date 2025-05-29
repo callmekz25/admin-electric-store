@@ -19,6 +19,10 @@ const router = Router();
  *       - NhaCungCap
  *     parameters:
  *       - in: query
+ *         name: mncc
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: t
  *         schema:
  *           type: string
@@ -50,7 +54,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { t, dc, sdt } = _req.query;
+  const { mncc, t, dc, sdt } = _req.query;
 
   try {
     let list = await db.NhaCungCap.findAll({
@@ -61,6 +65,11 @@ router.get("/", async (_req, res, next) => {
         },
       ],
     });
+
+    if (mncc != undefined)
+      list = list.filter((ncc) =>
+        ncc.MaNCC.toLowerCase().includes(mncc.toString().toLowerCase().trim())
+      );
 
     if (t != undefined)
       list = list.filter((ncc) =>

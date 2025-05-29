@@ -14,6 +14,10 @@ const router = Router();
  *       - ChiTietSanPham
  *     parameters:
  *       - in: query
+ *         name: ctsp
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: ncc
  *         schema:
  *           type: string
@@ -57,7 +61,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { ncc, lsp, chct, s, bh, m } = _req.query;
+  const { ctsp, ncc, lsp, chct, s, bh, m } = _req.query;
 
   try {
     let list = await db.ChiTietSanPham.findAll({
@@ -70,6 +74,13 @@ router.get("/", async (_req, res, next) => {
         },
       ],
     });
+
+    if (ctsp != undefined)
+      list = list.filter((ctSanPham) =>
+        ctSanPham.MaCTSP.toLowerCase().includes(
+          ctsp.toString().toLowerCase().trim()
+        )
+      );
 
     if (ncc != undefined)
       list = list.filter((ctSanPham) =>
