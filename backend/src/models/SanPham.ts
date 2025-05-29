@@ -11,6 +11,7 @@ export interface SanPhamAttrs {
   SoLuongTon?: number;
   MucGiamGia?: string;
   Gia?: number;
+  ChiTietSanPham?: ChiTietSanPham;
 }
 
 export class SanPham
@@ -23,8 +24,8 @@ export class SanPham
   public HinhAnh?: string;
   public SoLuongTon?: number;
   public MucGiamGia?: string;
-  public Gia?: number;  
-  public ChiTietSanPham?: ChiTietSanPham
+  public Gia?: number;
+  public ChiTietSanPham?: ChiTietSanPham;
 }
 
 SanPham.init(

@@ -15,6 +15,10 @@ const router = Router();
  *       - TtVanChuyen
  *     parameters:
  *       - in: query
+ *         name: vc
+ *         schema:
+ *           type: number
+ *       - in: query
  *         name: hd
  *         schema:
  *           type: string
@@ -66,10 +70,12 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { hd, dv, stt, des, dk, tt, cre, upd } = _req.query;
+  const { vc, hd, dv, stt, des, dk, tt, cre, upd } = _req.query;
 
   try {
     let list = await db.TtVanChuyen.findAll();
+
+    if (vc != undefined) list = list.filter((ttvc) => ttvc.MaVC == Number(vc));
 
     if (hd != undefined)
       list = list.filter((ttvc) =>
@@ -303,7 +309,7 @@ router.put("/:maVC", async (req, res, next) => {
     } else {
       await item.update(TtVanChuyen);
       //res.status(200);
-      res.status(200).send({ description: "Cập nhật thành công" });
+      res.status(200).json(item);
     }
   } catch (err) {
     next(err);

@@ -15,6 +15,10 @@ const router = Router();
  *       - TaiKhoan
  *     parameters:
  *       - in: query
+ *         name: mtk
+ *         schema:
+ *           type: string
+ *       - in: query
  *         name: ht
  *         schema:
  *           type: string
@@ -58,7 +62,7 @@ const router = Router();
  *                   type: string
  */
 router.get("/", async (_req, res, next) => {
-  const { ht, gt, ns, e, dc, sdt } = _req.query;
+  const { mtk, ht, gt, ns, e, dc, sdt } = _req.query;
 
   try {
     let list = await db.TaiKhoan.findAll({
@@ -78,6 +82,11 @@ router.get("/", async (_req, res, next) => {
         },
       ],
     });
+
+    if (mtk != undefined)
+      list = list.filter((tk) =>
+        tk.MaTK.toLowerCase().includes(mtk.toString().toLowerCase().trim())
+      );
 
     if (ht != undefined)
       list = list.filter((tk) =>
@@ -304,7 +313,7 @@ router.put("/:maTK", async (req, res, next) => {
     } else {
       await item.update(taiKhoan);
       //res.status(200);
-      res.status(200).send({ description: "Cập nhật thành công" });
+      res.status(200).json(item);
     }
   } catch (err) {
     next(err);
