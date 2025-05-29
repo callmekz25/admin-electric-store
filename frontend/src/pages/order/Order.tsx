@@ -28,10 +28,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { CalendarIcon, SlidersHorizontalIcon } from "lucide-react";
+import { CalendarIcon, PlusIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
+import AddOrder from "@/components/order/add-order";
 const Order = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<IOrderView | null>(null);
   const [advancedFilter, setAdvancedFilter] = useState<boolean>(false);
   const [filterQuery, setFilterQuery] = useState<IOrderFilterRequest>();
@@ -60,14 +62,23 @@ const Order = () => {
     <div className="px-8 py-10">
       <h2 className="text-2xl font-semibold">Danh sách các đơn hàng</h2>
       <div className="mt-10">
-        <Button
-          onClick={() => setAdvancedFilter(true)}
-          variant={"outline"}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <SlidersHorizontalIcon />
-          Lọc nâng cao
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={() => setAdvancedFilter(true)}
+            variant={"outline"}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <SlidersHorizontalIcon />
+            Lọc nâng cao
+          </Button>
+          <Button
+            onClick={() => setOpenAdd(true)}
+            className="flex items-center gap-2 cursor-pointer bg-blue-500 hover:bg-blue-500 "
+          >
+            <PlusIcon />
+            Thêm mới
+          </Button>
+        </div>
         {error && <span>{error.message}</span>}
         <DataTable
           isLoading={isLoading}
@@ -78,6 +89,7 @@ const Order = () => {
           data={data ?? []}
         />
       </div>
+      <AddOrder open={openAdd} onOpenChange={setOpenAdd} />
       <UpdateOrder
         open={openUpdate}
         onOpenChange={(value) => {

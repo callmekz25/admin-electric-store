@@ -1,9 +1,13 @@
-import columns from "@/components/supplier/columns-supplier";
+import columns from "@/components/order-detail/columns-order-detail";
+
 import { DataTable } from "@/components/table/data-table";
+
+import type IOrderFilterRequest from "@/interfaces/order/order-filter-request.interface";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+
 import {
   Dialog,
   DialogContent,
@@ -12,22 +16,22 @@ import {
 } from "@/components/ui/dialog";
 import { PlusIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import type ISupplierFilterRequest from "@/interfaces/supplier/supplier-filter-request.interface";
-import { useGetSuppliers } from "@/hooks/supplier";
-import type ISupplierView from "@/interfaces/supplier/supplier-view.interface";
-import UpdateSupplier from "@/components/supplier/update-supplier";
-import AddSupplier from "@/components/supplier/add-supplier";
-import DeleteSupplier from "@/components/supplier/delete-supplier";
-const Supplier = () => {
+import { useGetOrdersDetail } from "@/hooks/order-detail";
+import type IOrderDetail from "@/interfaces/order/order-detail.interface";
+import AddOrderDetail from "@/components/order-detail/add-order-detail";
+import UpdateOrderDetail from "@/components/order-detail/update-order-detail";
+
+import type IOrderDetailFilterRequest from "@/interfaces/order/order-detail-filter-request";
+const OrderDetailList = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-  const [selectedSupplier, setSelectedSupplier] =
-    useState<ISupplierView | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<IOrderDetail | null>(null);
   const [advancedFilter, setAdvancedFilter] = useState<boolean>(false);
-  const [filterQuery, setFilterQuery] = useState<ISupplierFilterRequest>();
-  const { control, reset, handleSubmit } = useForm<ISupplierFilterRequest>();
-  const [addSupplier, setAddSupplier] = useState(false);
-  const { data, isLoading, error } = useGetSuppliers(filterQuery!);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [filterQuery, setFilterQuery] = useState<IOrderDetailFilterRequest>();
+  const { control, reset, handleSubmit } = useForm<IOrderDetailFilterRequest>();
+
+  const { data, isLoading, error } = useGetOrdersDetail(filterQuery!);
+
   useEffect(() => {
     if (openUpdate) {
       document.body.style.overflow = "hidden";
@@ -39,14 +43,15 @@ const Supplier = () => {
       document.body.style.overflow = "";
     };
   }, [openUpdate]);
-  const handleAdvancedFilter = (filter: ISupplierFilterRequest) => {
+
+  const handleAdvancedFilter = (filter: IOrderDetailFilterRequest) => {
     setFilterQuery(filter);
     setAdvancedFilter(false);
     reset();
   };
   return (
     <div className="px-8 py-10">
-      <h2 className="text-2xl font-semibold">Danh sách các nhà cung cấp</h2>
+      <h2 className="text-2xl font-semibold">Danh sách các đơn hàng</h2>
       <div className="mt-10">
         <div className="flex items-center gap-3">
           <Button
@@ -58,42 +63,40 @@ const Supplier = () => {
             Lọc nâng cao
           </Button>
           <Button
-            onClick={() => setAddSupplier(true)}
+            onClick={() => setOpenAdd(true)}
             className="flex items-center gap-2 cursor-pointer bg-blue-500 hover:bg-blue-500 "
           >
             <PlusIcon />
             Thêm mới
           </Button>
         </div>
-        {error && <p>Lỗi xảy ra</p>}
+        {error && <span>{error.message}</span>}
         <DataTable
+          isLoading={isLoading}
           columns={columns({
-            onUpdate: (supplier) => {
-              setSelectedSupplier(supplier);
+            onUpdate: (order) => {
+              setSelectedOrder(order);
               setOpenUpdate(true);
             },
-            onDelete: (supplier) => {
-              setSelectedSupplier(supplier);
-              setOpenDelete(true);
+            onDelete: (order) => {
+              setSelectedOrder(order);
+              // setOpenDelete(true);
             },
           })}
-          isLoading={isLoading}
           data={data ?? []}
         />
       </div>
-      <DeleteSupplier
-        selectedSupplier={selectedSupplier!}
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-      />
-      <AddSupplier onOpenChange={setAddSupplier} open={addSupplier} />
-      <UpdateSupplier
-        onOpenChange={setOpenUpdate}
+      <AddOrderDetail open={openAdd} onOpenChange={setOpenAdd} />
+      <UpdateOrderDetail
         open={openUpdate}
-        selectedSupplier={selectedSupplier!}
+        onOpenChange={(value) => {
+          setOpenUpdate(value);
+          if (!value) setSelectedOrder(null);
+        }}
+        selectedOrder={selectedOrder!}
       />
       <Dialog open={advancedFilter} onOpenChange={setAdvancedFilter}>
-        <DialogContent className="min-w-[700px] pb-8 pt-6 px-6">
+        <DialogContent className="min-w-[650px] pb-8 pt-6 px-6">
           <DialogHeader>
             <DialogTitle className="text-2xl text-center">
               Lọc nâng cao
@@ -104,50 +107,50 @@ const Supplier = () => {
             className="flex items-center  gap-y-8 flex-wrap  mt-4"
           >
             <div className="flex flex-col gap-2 px-2 flex-[50%] max-w-[50%]">
-              <Label htmlFor="mncc" className=" font-normal opacity-70">
-                Mã nhà cung cấp
+              <Label htmlFor="hd" className=" font-normal opacity-70">
+                Mã hoá đơn
               </Label>
               <Controller
-                name="mncc"
+                name="hd"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} id="mncc" className="rounded" />
+                  <Input {...field} id="hd" className="rounded" />
                 )}
               />
             </div>
             <div className="flex flex-col gap-2 px-2 flex-[50%] max-w-[50%]">
-              <Label htmlFor="t" className=" font-normal opacity-70">
-                Tên nhà cung cấp
+              <Label htmlFor="sp" className=" font-normal opacity-70">
+                Mã sản phẩm
               </Label>
               <Controller
-                name="t"
+                name="sp"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} id="t" className="rounded" />
+                  <Input {...field} id="sp" className="rounded" />
                 )}
               />
             </div>
             <div className="flex flex-col gap-2 px-2 flex-[50%] max-w-[50%]">
-              <Label htmlFor="sdt" className=" font-normal opacity-70">
-                Số điện thoại
+              <Label htmlFor="sl" className=" font-normal opacity-70">
+                Số lượng
               </Label>
               <Controller
-                name="sdt"
+                name="sl"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} id="t" className="rounded" />
+                  <Input {...field} id="sl" type="number" className="rounded" />
                 )}
               />
             </div>
             <div className="flex flex-col gap-2 px-2 flex-[50%] max-w-[50%]">
-              <Label htmlFor="dc" className=" font-normal opacity-70">
-                Địa chỉ
+              <Label htmlFor="g" className=" font-normal opacity-70">
+                Giá bán
               </Label>
               <Controller
-                name="dc"
+                name="g"
                 control={control}
                 render={({ field }) => (
-                  <Input {...field} id="dc" className="rounded" />
+                  <Input {...field} id="g" type="number" className="rounded" />
                 )}
               />
             </div>
@@ -156,7 +159,6 @@ const Supplier = () => {
               <Button
                 type="button"
                 className="cursor-pointer "
-                onClick={() => setAdvancedFilter(false)}
                 variant={"outline"}
               >
                 Huỷ
@@ -175,4 +177,4 @@ const Supplier = () => {
   );
 };
 
-export default Supplier;
+export default OrderDetailList;

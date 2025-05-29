@@ -11,16 +11,19 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import type IProductView from "@/interfaces/product/product-view.interface";
+import type IProductRequest from "@/interfaces/product/product-request.interface";
 import { useGetProducts } from "@/hooks/product";
-import { SlidersHorizontalIcon } from "lucide-react";
+import { PlusIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import type IProductFilterRequest from "@/interfaces/product/product-filter-request.interface";
+import AddProduct from "@/components/product/add-product";
+import DeleteProduct from "@/components/product/delete-product";
 const Product = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<IProductView | null>(
-    null
-  );
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [selectedProduct, setSelectedProduct] =
+    useState<IProductRequest | null>(null);
   const [advancedFilter, setAdvancedFilter] = useState<boolean>(false);
   const [filterQuery, setFilterQuery] = useState<IProductFilterRequest>();
   const { control, reset, handleSubmit } = useForm<IProductFilterRequest>();
@@ -48,24 +51,45 @@ const Product = () => {
     <div className="px-8 py-10">
       <h2 className="text-2xl font-semibold">Danh sách các sản phẩm</h2>
       <div className="mt-10">
-        <Button
-          onClick={() => setAdvancedFilter(true)}
-          variant={"outline"}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <SlidersHorizontalIcon />
-          Lọc nâng cao
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={() => setAdvancedFilter(true)}
+            variant={"outline"}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <SlidersHorizontalIcon />
+            Lọc nâng cao
+          </Button>
+          <Button
+            onClick={() => setOpenAdd(true)}
+            className="flex items-center gap-2 cursor-pointer bg-blue-500 hover:bg-blue-500 "
+          >
+            <PlusIcon />
+            Thêm mới
+          </Button>
+        </div>
 
         <DataTable
-          columns={columns((product) => {
-            setSelectedProduct(product);
-            setOpenUpdate(true);
+          columns={columns({
+            onUpdate: (product) => {
+              setSelectedProduct(product);
+              setOpenUpdate(true);
+            },
+            onDelete: (product) => {
+              setSelectedProduct(product);
+              setOpenDelete(true);
+            },
           })}
           isLoading={isLoading}
           data={data ?? []}
         />
       </div>
+      <DeleteProduct
+        open={openDelete}
+        onOpenChange={setOpenDelete}
+        selectedProduct={selectedProduct!}
+      />
+      <AddProduct open={openAdd} onOpenChange={setOpenAdd} />
       <UpdateProduct
         selectedProduct={selectedProduct!}
         open={openUpdate}

@@ -1,6 +1,7 @@
 import type IOrderFilterRequest from "@/interfaces/order/order-filter-request.interface";
-import { getOrderById, getOrders } from "@/services/orderService";
-import { useQuery } from "@tanstack/react-query";
+import type IOrderView from "@/interfaces/order/order-view.interface";
+import { addOrder, getOrderById, getOrders } from "@/services/orderService";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const useGetOrders = (filter: IOrderFilterRequest) => {
   return useQuery({
@@ -14,5 +15,11 @@ export const useGetOrderById = (id: string) => {
     queryKey: ["orders", id],
     queryFn: () => getOrderById(id),
     enabled: !!id,
+  });
+};
+
+export const useAddOrder = () => {
+  return useMutation({
+    mutationFn: (request: IOrderView) => addOrder(request),
   });
 };

@@ -1,22 +1,22 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Ellipsis } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type ISupplierView from "@/interfaces/supplier/supplier-view.interface";
+import type IOrderDetail from "@/interfaces/order/order-detail.interface";
 const columns = ({
   onUpdate,
   onDelete,
 }: {
-  onUpdate: (supplier: ISupplierView) => void;
-  onDelete: (supplier: ISupplierView) => void;
-}): ColumnDef<ISupplierView>[] => [
+  onUpdate: (order: IOrderDetail) => void;
+  onDelete: (order: IOrderDetail) => void;
+}): ColumnDef<IOrderDetail>[] => [
   // Row selection
   {
     id: "select",
@@ -42,103 +42,83 @@ const columns = ({
   },
   // Column key
   {
-    accessorKey: "MaNCC",
+    accessorKey: "MaHD",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Mã nhà cung cấp
+          Mã hoá đơn
           <ArrowUpDown className="h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <h3 className=" text-sm  py-8">{row.original.MaNCC}</h3>,
+    cell: ({ row }) => <h3 className=" text-sm py-8 ">{row.original.MaHD}</h3>,
     meta: {
-      label: "Mã nhà cung cấp",
-    },
-  },
-  {
-    accessorKey: "TenNCC",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Tên nhà cung cấp
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <h3 className=" text-sm   max-w-[200px] truncate">
-        {row.original.TenNCC}
-      </h3>
-    ),
-    meta: {
-      label: "Tên nhà cung cấp",
-    },
-  },
-  {
-    accessorKey: "DiaChiNCC",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Địa chỉ
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <h3 className=" text-sm   max-w-[200px] truncate">
-        {row.original.DiaChiNCC}
-      </h3>
-    ),
-    meta: {
-      label: "Địa chỉ",
-    },
-  },
-  {
-    accessorKey: "SDT_NCC",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Số điện thoại
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.SDT_NCC}</h3>,
-    meta: {
-      label: "Số điện thoại",
+      label: "Mã hoá đơn",
     },
   },
 
   {
-    accessorFn: (row) => row.DanhSachSanPham.length,
-    id: "SoLuong",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Số lượng cung cấp
-        <ArrowUpDown className=" h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ getValue }) => <h3 className="text-sm ">{getValue<number>()}</h3>,
+    accessorKey: "MaSP",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mã sản phẩm
+          <ArrowUpDown className="h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm py-8 ">{row.original.MaSP}</h3>,
     meta: {
-      label: "Số lượng cung cấp",
+      label: "Mã sản phẩm",
     },
   },
+
+  {
+    accessorKey: "SoLuong",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Số lượng
+          <ArrowUpDown className="h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm py-8 ">{row.original.MaHD}</h3>,
+    meta: {
+      label: "Số lượng",
+    },
+  },
+
+  {
+    accessorKey: "GiaBan",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Giá bán
+          <ArrowUpDown className="h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <h3 className=" text-sm py-8 ">{row.original.GiaBan ?? "N/A"}</h3>
+    ),
+    meta: {
+      label: "Giá bán",
+    },
+  },
+
   {
     accessorKey: "handle",
     header: "Thao tác",
@@ -156,19 +136,6 @@ const columns = ({
               onClick={() => onUpdate(row.original)}
             >
               Cập nhật
-            </button>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className=" flex items-center  w-full gap-1 cursor-pointer">
-              Chi tiết
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <button
-              onClick={() => onDelete(row.original)}
-              className="text-red-500 w-full flex  items-center justify-start cursor-pointer"
-            >
-              Xoá
             </button>
           </DropdownMenuItem>
         </DropdownMenuContent>

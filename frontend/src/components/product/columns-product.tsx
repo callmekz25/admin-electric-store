@@ -3,16 +3,20 @@ import { ArrowUpDown, Ellipsis } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import type IProductView from "@/interfaces/product/product-view.interface";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-const columns = (
-  onUpdate: (product: IProductView) => void
-): ColumnDef<IProductView>[] => [
+import type IProductRequest from "@/interfaces/product/product-request.interface";
+const columns = ({
+  onUpdate,
+  onDelete,
+}: {
+  onUpdate: (product: IProductRequest) => void;
+  onDelete: (product: IProductRequest) => void;
+}): ColumnDef<IProductRequest>[] => [
   // Row selection
   {
     id: "select",
@@ -213,7 +217,10 @@ const columns = (
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <button className="text-red-500 w-full flex  items-center justify-start cursor-pointer">
+            <button
+              onClick={() => onDelete(row.original)}
+              className="text-red-500 w-full flex  items-center justify-start cursor-pointer"
+            >
               Xoá
             </button>
           </DropdownMenuItem>
