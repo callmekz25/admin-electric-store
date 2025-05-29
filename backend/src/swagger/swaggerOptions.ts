@@ -9,6 +9,7 @@ import danhGiaSchema from "../schemas/DanhGia.json";
 import hoaDonSchema from "../schemas/HoaDon.json";
 import chiTietHoaDonSchema from "../schemas/ChiTietHoaDon.json";
 import ttVanChuyenSchema from "../schemas/TtVanChuyen.json";
+import querySchema from "../schemas/QueryString.json";
 
 const taiKhoan = taiKhoanSchema.definitions.TaiKhoanAttrs;
 const nhaCungCap = nhaCungCapSchema.definitions.NhaCungCapAttrs;
@@ -38,6 +39,7 @@ const definition: OAS3Definition = {
       HoaDon: hoaDon,
       ChiTietHoaDon: chiTietHoaDon,
       TtVanChuyen: ttVanChuyen,
+      QueryString: querySchema,
     },
   },
 
