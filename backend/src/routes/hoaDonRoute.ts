@@ -271,7 +271,39 @@ router.get("/:maHD", async (req, res, next) => {
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const hd = await db.HoaDon.create(req.body);
+    const hd = await db.HoaDon.create(req.body, {
+      include: [
+        {
+          model: ChiTietHoaDon,
+          as: "DanhSachSanPham",
+          include: [
+            {
+              model: SanPham,
+              include: [
+                {
+                  model: ChiTietSanPham,
+                  include: [
+                    {
+                      model: NhaCungCap,
+                    },
+                    {
+                      model: LoaiSanPham,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: TaiKhoan,
+        },
+        {
+          model: TtVanChuyen,
+        },
+      ],
+    });
+
     res.status(201).json(hd);
   } catch (err) {
     next(err);
@@ -338,13 +370,45 @@ router.put("/:maHD", async (req, res, next) => {
   try {
     const { maHD } = req.params;
     const HoaDon = req.body;
-    let item = await db.HoaDon.findByPk(maHD);
+    let item = await db.HoaDon.findByPk(maHD, {
+      include: [
+        {
+          model: ChiTietHoaDon,
+          as: "DanhSachSanPham",
+          include: [
+            {
+              model: SanPham,
+              include: [
+                {
+                  model: ChiTietSanPham,
+                  include: [
+                    {
+                      model: NhaCungCap,
+                    },
+                    {
+                      model: LoaiSanPham,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: TaiKhoan,
+        },
+        {
+          model: TtVanChuyen,
+        },
+      ],
+    });
 
     if (!item) {
       res.sendStatus(404);
     } else {
       await item.update(HoaDon);
-      //res.status(200);
+      await item.TtVanChuyen?.update(HoaDon["TtVanChuyen"]);
+
       res.status(200).json(item);
     }
   } catch (err) {

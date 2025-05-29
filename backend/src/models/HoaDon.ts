@@ -11,6 +11,7 @@ export interface HoaDonAttrs {
   NgayGiao?: Date;
   NoiGiao?: string;
   HinhThucThanhToan?: string;
+  TtVanChuyen?: TtVanChuyen;
 }
 
 export class HoaDon
@@ -23,6 +24,7 @@ export class HoaDon
   public NgayGiao?: Date;
   public NoiGiao?: string;
   public HinhThucThanhToan?: string;
+  public TtVanChuyen?: TtVanChuyen;
 }
 
 HoaDon.init(
