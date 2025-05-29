@@ -29,3 +29,21 @@ export const addSupplier = async (request: ISupplier) => {
     console.log(error);
   }
 };
+
+export const updateSupplier = async (request: ISupplier) => {
+  try {
+    const { data } = await httpRequest.put(`${url}/${request.MaNCC}`, request);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteSupplier = async (id: string) => {
+  try {
+    const { data } = await httpRequest.delete(`${url}/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

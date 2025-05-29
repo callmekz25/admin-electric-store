@@ -5,6 +5,9 @@ import { XIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
 import type ISupplier from "@/interfaces/supplier/supplier.interface";
+import { useUpdateSupplier } from "@/hooks/supplier";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 const UpdateSupplier = ({
   selectedSupplier,
   open,
@@ -14,8 +17,14 @@ const UpdateSupplier = ({
   selectedSupplier: ISupplier;
   onOpenChange: (value: boolean) => void;
 }) => {
-  const { control, reset } = useForm<ISupplier>();
-
+  const {
+    control,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<ISupplier>();
+  const queryClient = useQueryClient();
+  const { mutate: updateSupplier, isPending } = useUpdateSupplier();
   useEffect(() => {
     if (selectedSupplier) {
       reset({
@@ -26,7 +35,16 @@ const UpdateSupplier = ({
       });
     }
   }, [selectedSupplier, reset]);
-
+  const handleUpdateSupplier = (data: ISupplier) => {
+    updateSupplier(data, {
+      onSuccess: (data) => {
+        toast.success("Cập nhật thành công");
+        reset(data);
+        queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+      },
+      onError: (error) => toast.error(error.message),
+    });
+  };
   return (
     <div className="">
       <>
@@ -52,13 +70,20 @@ const UpdateSupplier = ({
               </h2>
               <button
                 className=" cursor-pointer"
-                onClick={() => onOpenChange(false)}
+                type="button"
+                onClick={() => {
+                  onOpenChange(false);
+                  reset();
+                }}
               >
                 <XIcon className="size-5" />
               </button>
             </div>
             {selectedSupplier ? (
-              <div className=" grid grid-cols-2 gap-6 mt-10">
+              <form
+                onSubmit={handleSubmit(handleUpdateSupplier)}
+                className=" grid grid-cols-2 gap-6 mt-10"
+              >
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="mncc" className=" font-normal opacity-70">
                     Mã nhà cung cấp
@@ -84,10 +109,18 @@ const UpdateSupplier = ({
                   <Controller
                     name="TenNCC"
                     control={control}
+                    rules={{
+                      required: "Tên nhà cung cấp không được trống",
+                    }}
                     render={({ field }) => (
                       <Input {...field} id="ht" className="rounded" />
                     )}
                   />
+                  {errors.TenNCC && (
+                    <span className="text-[13px] text-red-500">
+                      {errors.TenNCC.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -98,10 +131,18 @@ const UpdateSupplier = ({
                   <Controller
                     name="SDT_NCC"
                     control={control}
+                    rules={{
+                      required: "Số điện thoại không được trống",
+                    }}
                     render={({ field }) => (
                       <Input {...field} id="SDT_NCC" className="rounded" />
                     )}
                   />
+                  {errors.SDT_NCC && (
+                    <span className="text-[13px] text-red-500">
+                      {errors.SDT_NCC.message}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label
@@ -114,24 +155,41 @@ const UpdateSupplier = ({
                   <Controller
                     name="DiaChiNCC"
                     control={control}
+                    rules={{
+                      required: "Địa chỉ không được trống",
+                    }}
                     render={({ field }) => (
                       <Input {...field} id="DiaChiNCC" className="rounded" />
                     )}
                   />
+                  {errors.DiaChiNCC && (
+                    <span className="text-[13px] text-red-500">
+                      {errors.DiaChiNCC.message}
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center justify-end gap-4 col-span-2">
                   <Button
-                    onClick={() => onOpenChange(false)}
+                    disabled={isPending}
+                    type="button"
+                    onClick={() => {
+                      onOpenChange(false);
+                      reset();
+                    }}
                     variant="outline"
                     className=" cursor-pointer "
                   >
                     Huỷ
                   </Button>
-                  <Button className="bg-blue-500 hover:bg-blue-500 cursor-pointer ">
+                  <Button
+                    isLoading={isPending}
+                    disabled={isPending}
+                    className="bg-blue-500 hover:bg-blue-500 cursor-pointer "
+                  >
                     Cập nhật
                   </Button>
                 </div>
-              </div>
+              </form>
             ) : (
               <p>Đang tải...</p>
             )}

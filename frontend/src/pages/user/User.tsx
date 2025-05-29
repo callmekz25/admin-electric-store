@@ -27,16 +27,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { CalendarIcon, SlidersHorizontalIcon } from "lucide-react";
+import { CalendarIcon, PlusIcon, SlidersHorizontalIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import type IUserFilterRequest from "@/interfaces/user/user-filter-request";
+import AddUser from "@/components/user/add-user";
+import type IUser from "@/interfaces/user/user.interface";
+import DeleteUser from "@/components/user/delete-user";
 const User = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<IUserView | null>(null);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const [advancedFilter, setAdvancedFilter] = useState<boolean>(false);
   const [filterQuery, setFilterQuery] = useState<IUserFilterRequest>();
   const { control, reset, handleSubmit } = useForm<IUserFilterRequest>();
-
+  const [openDelete, setOpenDelete] = useState(false);
   const { data, isLoading, error } = useGetUsers(filterQuery!);
   useEffect(() => {
     if (openUpdate) {
@@ -58,23 +62,44 @@ const User = () => {
     <div className="px-8 py-10">
       <h2 className="text-2xl font-semibold">Danh sách các tài khoản</h2>
       <div className="mt-10">
-        <Button
-          onClick={() => setAdvancedFilter(true)}
-          variant={"outline"}
-          className="flex items-center gap-2 cursor-pointer"
-        >
-          <SlidersHorizontalIcon />
-          Lọc nâng cao
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            onClick={() => setAdvancedFilter(true)}
+            variant={"outline"}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <SlidersHorizontalIcon />
+            Lọc nâng cao
+          </Button>
+          <Button
+            onClick={() => setOpenAdd(true)}
+            className="flex items-center gap-2 cursor-pointer bg-blue-500 hover:bg-blue-500 "
+          >
+            <PlusIcon />
+            Thêm mới
+          </Button>
+        </div>
         <DataTable
-          columns={columns((order) => {
-            setSelectedUser(order);
-            setOpenUpdate(true);
+          columns={columns({
+            onUpdate: (user) => {
+              setSelectedUser(user);
+              setOpenUpdate(true);
+            },
+            onDelete: (user) => {
+              setSelectedUser(user);
+              setOpenDelete(true);
+            },
           })}
           isLoading={isLoading}
           data={data ?? []}
         />
       </div>
+      <DeleteUser
+        open={openDelete}
+        onOpenChange={setOpenDelete}
+        selectedUser={selectedUser!}
+      />
+      <AddUser open={openAdd} onOpenChange={setOpenAdd} />
       <UpdateUser
         onOpenChange={setOpenUpdate}
         open={openUpdate}

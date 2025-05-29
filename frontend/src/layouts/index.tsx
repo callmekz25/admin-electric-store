@@ -1,4 +1,10 @@
-import { BoxIcon, HomeIcon, TruckIcon, UsersRoundIcon } from "lucide-react";
+import {
+  BoxesIcon,
+  BoxIcon,
+  HomeIcon,
+  TruckIcon,
+  UsersRoundIcon,
+} from "lucide-react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 
 const Layout = () => {
@@ -34,7 +40,20 @@ const Layout = () => {
               }`}
             >
               <BoxIcon className="size-5" />
-              Đơn hàng
+              Hoá đơn
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/order-detail"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname.startsWith("/order-detail")
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              <BoxesIcon className="size-5" />
+              Chi tiết hoá đơn
             </Link>
           </li>
           <li>
@@ -63,6 +82,7 @@ const Layout = () => {
               Khách hàng
             </Link>
           </li>
+
           <li>
             <Link
               to="/suppliers"

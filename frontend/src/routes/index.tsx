@@ -9,6 +9,9 @@ const OrderDetail = lazy(() => import("../pages/order/OrderDetail"));
 const User = lazy(() => import("../pages/user/User"));
 const ProductDetail = lazy(() => import("../pages/product/ProductDetail"));
 const Supplier = lazy(() => import("../pages/supplier/Supplier"));
+const OrderDetailList = lazy(
+  () => import("../pages/order-detail/OrderDetailList")
+);
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -58,6 +61,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <Supplier />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/order-detail",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <OrderDetailList />
           </Suspense>
         ),
       },

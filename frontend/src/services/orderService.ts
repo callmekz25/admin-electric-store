@@ -1,5 +1,6 @@
 import httpRequest from "@/config/axios.config";
 import type IOrderFilterRequest from "@/interfaces/order/order-filter-request.interface";
+import type IOrderView from "@/interfaces/order/order-view.interface";
 import { format } from "date-fns";
 const url = "/hoa-don";
 export const getOrders = async (filter: IOrderFilterRequest) => {
@@ -26,6 +27,15 @@ export const getOrders = async (filter: IOrderFilterRequest) => {
 export const getOrderById = async (id: string) => {
   try {
     const { data } = await httpRequest.get(`${url}/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const addOrder = async (request: IOrderView) => {
+  try {
+    const { data } = await httpRequest.post(`${url}`, request);
     return data;
   } catch (error) {
     console.log(error);

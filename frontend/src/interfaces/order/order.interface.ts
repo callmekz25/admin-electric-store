@@ -5,5 +5,6 @@ interface IOrder {
   NgayGiao?: string;
   NoiGiao?: string;
   HinhThucThanhToan?: string;
+  MaVC?: number;
 }
 export default IOrder;
