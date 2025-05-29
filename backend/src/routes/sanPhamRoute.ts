@@ -332,6 +332,9 @@ router.put("/:maSP", async (req, res, next) => {
       res.sendStatus(404);
     } else {
       await item.update(SanPham);
+
+      await item.ChiTietSanPham?.update(SanPham["ChiTietSanPham"]);
+
       //res.status(200);
       res.status(200).json(item);
     }
