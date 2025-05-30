@@ -19,6 +19,9 @@ import { CalendarIcon, XIcon } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useEffect } from "react";
 import type IOrderView from "@/interfaces/order/order-view.interface";
+import { useUpdateOrder } from "@/hooks/order";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 const UpdateOrder = ({
   selectedOrder,
   open,
@@ -28,7 +31,12 @@ const UpdateOrder = ({
   selectedOrder: IOrderView;
   onOpenChange: (value: boolean) => void;
 }) => {
-  const { control, reset } = useForm<IOrderView>({
+  const {
+    control,
+    reset,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IOrderView>({
     defaultValues: {
       MaHD: "",
       NgayLap: "",
@@ -38,6 +46,10 @@ const UpdateOrder = ({
       TtVanChuyen: {},
     },
   });
+  const queryClient = useQueryClient();
+
+  const { mutate: updatOrder, isPending } = useUpdateOrder();
+
   useEffect(() => {
     if (selectedOrder) {
       reset({
@@ -50,7 +62,16 @@ const UpdateOrder = ({
       });
     }
   }, [selectedOrder, reset]);
-
+  const handleUpdateOrder = (data: IOrderView) => {
+    updatOrder(data, {
+      onSuccess: (data) => {
+        toast.success("Cập nhật thành công");
+        reset(data);
+        queryClient.invalidateQueries({ queryKey: ["orders"] });
+      },
+      onError: (error) => toast.error(error.message),
+    });
+  };
   return (
     <div className="">
       <>
@@ -76,13 +97,18 @@ const UpdateOrder = ({
               </h2>
               <button
                 className=" cursor-pointer"
+                disabled={isPending}
+                type="button"
                 onClick={() => onOpenChange(false)}
               >
                 <XIcon className="size-5" />
               </button>
             </div>
             {selectedOrder ? (
-              <div className=" grid grid-cols-2 gap-6 mt-10">
+              <form
+                onSubmit={handleSubmit(handleUpdateOrder)}
+                className=" grid grid-cols-2 gap-6 mt-10"
+              >
                 <div className="flex flex-col gap-6">
                   <div className="flex flex-col gap-2">
                     <Label htmlFor="MaHD" className=" font-normal opacity-70">
@@ -95,6 +121,7 @@ const UpdateOrder = ({
                         <Input
                           {...field}
                           readOnly
+                          disabled
                           id="MaHD"
                           className="rounded"
                         />
@@ -233,6 +260,7 @@ const UpdateOrder = ({
                       control={control}
                       render={({ field }) => (
                         <Select
+                          key={field.value}
                           value={field.value}
                           onValueChange={field.onChange}
                         >
@@ -278,17 +306,27 @@ const UpdateOrder = ({
                       name="TtVanChuyen.Status"
                       control={control}
                       render={({ field }) => (
-                        <Select defaultValue="cod">
+                        <Select
+                          key={field.value}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
                           <SelectTrigger className="w-full rounded">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="w-full">
                             <SelectGroup>
-                              <SelectItem value="cod">Đã xác nhận</SelectItem>
-                              <SelectItem value="banking">Đang giao</SelectItem>
-                              <SelectItem value="ssd">Đã giao</SelectItem>
-                              <SelectItem value="hdd">Giao thất bại</SelectItem>
-                              <SelectItem value="cancel">Đã huỷ</SelectItem>
+                              <SelectItem value="Đã xác nhận">
+                                Đã xác nhận
+                              </SelectItem>
+                              <SelectItem value="Đang giao">
+                                Đang giao
+                              </SelectItem>
+                              <SelectItem value="Đã giao">Đã giao</SelectItem>
+                              <SelectItem value="Giao thất bại">
+                                Giao thất bại
+                              </SelectItem>
+                              <SelectItem value="Đã huỷ">Đã huỷ</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -406,18 +444,25 @@ const UpdateOrder = ({
 
                   <div className="flex items-center justify-end gap-4">
                     <Button
+                      type="button"
+                      disabled={isPending}
                       onClick={() => onOpenChange(false)}
                       variant="outline"
                       className=" cursor-pointer "
                     >
                       Huỷ
                     </Button>
-                    <Button className="bg-blue-500 hover:bg-blue-500 cursor-pointer ">
+                    <Button
+                      type="submit"
+                      disabled={isPending}
+                      isLoading={isPending}
+                      className="bg-blue-500 hover:bg-blue-500 cursor-pointer "
+                    >
                       Cập nhật
                     </Button>
                   </div>
                 </div>
-              </div>
+              </form>
             ) : (
               <p>Đang tải...</p>
             )}

@@ -44,10 +44,17 @@ const AddOrder = ({
     defaultValues: {
       MaHD: "",
       NgayLap: "",
+      MaTK: "",
       NgayGiao: "",
       NoiGiao: "",
       HinhThucThanhToan: "",
-      TtVanChuyen: {},
+      TtVanChuyen: {
+        MaVC: 0,
+        TenDonViVC: "",
+        NgayGiaoDuKien: "",
+        NgayGiaoThucTe: "",
+        Status: "",
+      },
     },
   });
   const { mutate: addOrder, isPending } = useAddOrder();

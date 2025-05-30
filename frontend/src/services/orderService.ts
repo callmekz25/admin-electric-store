@@ -41,3 +41,19 @@ export const addOrder = async (request: IOrderView) => {
     console.log(error);
   }
 };
+export const updateOrder = async (request: IOrderView) => {
+  try {
+    const { data } = await httpRequest.put(`${url}/${request.MaHD}`, request);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const deleteOrder = async (id: string) => {
+  try {
+    const { data } = await httpRequest.delete(`${url}/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

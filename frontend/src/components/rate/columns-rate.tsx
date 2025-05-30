@@ -1,6 +1,5 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Ellipsis } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -9,14 +8,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type IUser from "@/interfaces/user/user.interface";
+import type IRate from "@/interfaces/rate/rate.interface";
 const columns = ({
   onUpdate,
   onDelete,
 }: {
-  onUpdate: (user: IUser) => void;
-  onDelete: (user: IUser) => void;
-}): ColumnDef<IUser>[] => [
+  onUpdate: (rate: IRate) => void;
+  onDelete: (rate: IRate) => void;
+}): ColumnDef<IRate>[] => [
   // Row selection
   {
     id: "select",
@@ -60,119 +59,101 @@ const columns = ({
     },
   },
   {
-    accessorKey: "HoTenTK",
+    accessorKey: "MaDG",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Họ tên
+          Mã đánh giá
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm  ">{row.original.MaDG}</h3>,
+    meta: {
+      label: "Mã đánh giá",
+    },
+  },
+  {
+    accessorKey: "MaSP",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Mã sản phẩm
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm  ">{row.original.MaSP}</h3>,
+    meta: {
+      label: "Mã sản phẩm",
+    },
+  },
+  {
+    accessorKey: "NgayDanhGia",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Ngày đánh giá
           <ArrowUpDown className=" h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <h3 className=" text-sm   max-w-[200px] truncate">
-        {row.original.HoTenTK}
+      <h3 className=" text-sm ">
+        {row.original.NgayDanhGia ? row.original.NgayDanhGia : "N/A"}
       </h3>
     ),
     meta: {
-      label: "Họ tên",
+      label: "Ngày đánh giá",
     },
   },
   {
-    accessorKey: "GioiTinh",
+    accessorKey: "SoSao",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Giới tính
+          Số sao
+          <ArrowUpDown className=" h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <h3 className=" text-sm ">{row.original.SoSao}</h3>,
+    meta: {
+      label: "Số sao",
+    },
+  },
+  {
+    accessorKey: "BinhLuan",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Bình luận
           <ArrowUpDown className=" h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => (
-      <h3 className=" text-sm   max-w-[200px] truncate">
-        {row.original.GioiTinh}
+      <h3 className=" text-sm max-w-[200px]  truncate">
+        {row.original.BinhLuan ?? "N/A"}
       </h3>
     ),
     meta: {
-      label: "Giới tính",
-    },
-  },
-  {
-    accessorKey: "Email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.Email}</h3>,
-    meta: {
-      label: "Email",
-    },
-  },
-  {
-    accessorKey: "SDT",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Số điện thoại
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.SDT}</h3>,
-    meta: {
-      label: "Số điện thoại",
-    },
-  },
-  {
-    accessorKey: "NgaySinh",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Ngày sinh
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.NgaySinh}</h3>,
-    meta: {
-      label: "Ngày sinh",
-    },
-  },
-  {
-    accessorKey: "DiaChi",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Địa chỉ
-          <ArrowUpDown className=" h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <h3 className=" text-sm ">{row.original.DiaChi}</h3>,
-    meta: {
-      label: "Địa chỉ",
+      label: "Bình luận",
     },
   },
 

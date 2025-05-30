@@ -94,6 +94,7 @@ const UpdateSupplier = ({
                     render={({ field }) => (
                       <Input
                         {...field}
+                        disabled
                         readOnly
                         id="mncc"
                         className="rounded"

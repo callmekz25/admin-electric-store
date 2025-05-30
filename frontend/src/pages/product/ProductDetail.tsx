@@ -49,7 +49,15 @@ const ProductDetail = () => {
               </div>
               <div className="flex items-center text-sm  justify-between">
                 <span className=" font-normal opacity-70 ">Hình ảnh</span>
-                <span>{product.HinhAnh !== "" ? product.HinhAnh : "N/A"}</span>
+                <img
+                  src={
+                    product.HinhAnh !== ""
+                      ? product.HinhAnh
+                      : "https://t4.ftcdn.net/jpg/06/71/92/37/360_F_671923740_x0zOL3OIuUAnSF6sr7PuznCI5bQFKhI0.jpg"
+                  }
+                  alt={product.TenSP}
+                  className="size-20 object-contain"
+                />
               </div>
               <div className="flex items-center text-sm  justify-between">
                 <span className=" font-normal opacity-70 ">Tên sản phẩm</span>

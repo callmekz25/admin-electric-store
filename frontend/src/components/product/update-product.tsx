@@ -135,6 +135,7 @@ const UpdateProduct = ({
                       render={({ field }) => (
                         <Input
                           {...field}
+                          disabled
                           readOnly
                           id="MaSP"
                           className="rounded"

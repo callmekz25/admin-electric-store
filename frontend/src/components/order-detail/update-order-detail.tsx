@@ -65,7 +65,7 @@ const UpdateOrderDetail = ({
 
     updateOT(request, {
       onSuccess: () => {
-        toast.success("Thêm mới thành công");
+        toast.success("Cập nhật thành công");
         reset();
         queryClient.invalidateQueries({ queryKey: ["orders-detail"] });
       },
@@ -95,7 +95,7 @@ const UpdateOrderDetail = ({
         >
           <div className="p-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold ">Thêm mới chi tiết hoá đơn</h2>
+              <h2 className="text-xl font-bold ">Cập nhật chi tiết hoá đơn</h2>
               <button
                 className=" cursor-pointer"
                 type="button"
@@ -249,7 +249,7 @@ const UpdateOrderDetail = ({
                       disabled={isPending}
                       className="bg-blue-500 hover:bg-blue-500 cursor-pointer "
                     >
-                      Thêm
+                      Cập nhật
                     </Button>
                   </div>
                 </div>

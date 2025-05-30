@@ -51,7 +51,7 @@ const OrderDetailList = () => {
   };
   return (
     <div className="px-8 py-10">
-      <h2 className="text-2xl font-semibold">Danh sách các đơn hàng</h2>
+      <h2 className="text-2xl font-semibold">Danh sách các chi tiết hoá đơn</h2>
       <div className="mt-10">
         <div className="flex items-center gap-3">
           <Button
@@ -77,10 +77,6 @@ const OrderDetailList = () => {
             onUpdate: (order) => {
               setSelectedOrder(order);
               setOpenUpdate(true);
-            },
-            onDelete: (order) => {
-              setSelectedOrder(order);
-              // setOpenDelete(true);
             },
           })}
           data={data ?? []}

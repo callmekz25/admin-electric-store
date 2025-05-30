@@ -2,6 +2,7 @@ import {
   BoxesIcon,
   BoxIcon,
   HomeIcon,
+  StarIcon,
   TruckIcon,
   UsersRoundIcon,
 } from "lucide-react";
@@ -16,7 +17,7 @@ const Layout = () => {
     <div className="flex">
       <div className="flex-[0_0_18%] max-w-[18%] h-screen sticky top-0 border-r border-gray-300 px-4 py-10 font-medium">
         <h3 className="text-2xl text-center">Admin</h3>
-        <ul className="flex flex-col mt-8 gap-4 px-4">
+        <ul className="flex flex-col mt-8 gap-6 px-4">
           <li>
             <Link
               to="/"
@@ -94,6 +95,19 @@ const Layout = () => {
             >
               <TruckIcon className="size-5" />
               Nhà cung cấp
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/rates"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname.startsWith("/rates")
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              <StarIcon className="size-5" />
+              Đánh giá
             </Link>
           </li>
         </ul>
