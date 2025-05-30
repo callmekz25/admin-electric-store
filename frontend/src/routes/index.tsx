@@ -12,6 +12,7 @@ const Supplier = lazy(() => import("../pages/supplier/Supplier"));
 const OrderDetailList = lazy(
   () => import("../pages/order-detail/OrderDetailList")
 );
+const Rate = lazy(() => import("../pages/rate/Rate"));
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -77,6 +78,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loading />}>
             <ProductDetail />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/rates",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <Rate />
           </Suspense>
         ),
       },

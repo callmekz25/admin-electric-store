@@ -2,6 +2,7 @@ import {
   BoxesIcon,
   BoxIcon,
   HomeIcon,
+  StarIcon,
   TruckIcon,
   UsersRoundIcon,
 } from "lucide-react";
@@ -94,6 +95,19 @@ const Layout = () => {
             >
               <TruckIcon className="size-5" />
               Nhà cung cấp
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/rates"
+              className={`flex transition-all duration-300  items-center gap-3 rounded-md px-4 py-2.5 ${
+                pathname.startsWith("/rates")
+                  ? "bg-blue-500 text-white "
+                  : "hover:bg-gray-200"
+              }`}
+            >
+              <StarIcon className="size-5" />
+              Đánh giá
             </Link>
           </li>
         </ul>

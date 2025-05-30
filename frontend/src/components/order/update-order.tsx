@@ -64,9 +64,9 @@ const UpdateOrder = ({
   }, [selectedOrder, reset]);
   const handleUpdateOrder = (data: IOrderView) => {
     updatOrder(data, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         toast.success("Cập nhật thành công");
-        reset();
+        reset(data);
         queryClient.invalidateQueries({ queryKey: ["orders"] });
       },
       onError: (error) => toast.error(error.message),
@@ -306,7 +306,7 @@ const UpdateOrder = ({
                       name="TtVanChuyen.Status"
                       control={control}
                       render={({ field }) => (
-                      <Select
+                        <Select
                           key={field.value}
                           value={field.value}
                           onValueChange={field.onChange}
