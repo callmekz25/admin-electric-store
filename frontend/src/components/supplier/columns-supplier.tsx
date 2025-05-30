@@ -135,6 +135,7 @@ const columns = ({
       </Button>
     ),
     cell: ({ getValue }) => <h3 className="text-sm ">{getValue<number>()}</h3>,
+
     meta: {
       label: "Số lượng cung cấp",
     },

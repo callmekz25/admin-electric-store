@@ -281,6 +281,7 @@ const Order = () => {
                 type="button"
                 className="cursor-pointer "
                 variant={"outline"}
+                onClick={() => setAdvancedFilter(false)}
               >
                 Huỷ
               </Button>

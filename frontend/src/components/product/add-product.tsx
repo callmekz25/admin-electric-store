@@ -48,7 +48,20 @@ const AddProduct = ({
       SoLuongTon: 0,
       Gia: 0,
       MucGiamGia: 0,
-      ChiTietSanPham: {},
+      ChiTietSanPham: {
+        BaoHanh: 0,
+        CauHinhChiTiet: "",
+        LoaiSanPham: {
+          MaLoaiSP: "",
+          MotaLSP: "",
+          TenLSP: "",
+        },
+        MaCTSP: "",
+        MaLoaiSP: "",
+        MaNCC: "",
+        MauSP: "",
+        Series_SP: "",
+      },
     },
   });
   const queryClient = useQueryClient();

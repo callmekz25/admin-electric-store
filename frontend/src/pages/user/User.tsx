@@ -2,7 +2,6 @@ import columns from "@/components/user/columns-user";
 import { DataTable } from "@/components/table/data-table";
 import { useGetUsers } from "@/hooks/user";
 import { useEffect, useState } from "react";
-import type IUserView from "@/interfaces/user/user-view.interface";
 import UpdateUser from "@/components/user/update-user";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -116,6 +115,18 @@ const User = () => {
             onSubmit={handleSubmit(handleAdvancedFilter)}
             className="flex items-center  gap-y-8 flex-wrap  mt-4"
           >
+            <div className="flex flex-col gap-2 px-2 flex-[50%] max-w-[50%]">
+              <Label htmlFor="mtk" className=" font-normal opacity-70">
+                Mã tài khoản
+              </Label>
+              <Controller
+                name="mtk"
+                control={control}
+                render={({ field }) => (
+                  <Input {...field} id="mtk" className="rounded" />
+                )}
+              />
+            </div>
             <div className="flex flex-col gap-2 px-2 flex-[50%] max-w-[50%]">
               <Label htmlFor="ht" className=" font-normal opacity-70">
                 Họ tên
@@ -240,6 +251,7 @@ const User = () => {
             <div className="flex items-center mt-4 flex-1 justify-end gap-4">
               <Button
                 type="button"
+                onClick={() => setAdvancedFilter(false)}
                 className="cursor-pointer "
                 variant={"outline"}
               >

@@ -37,6 +37,8 @@ import type IProduct from "@/interfaces/product/product.interface";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
 import AddRate from "@/components/rate/add-rate";
+import UpdateRate from "@/components/rate/update-rate";
+import DeleteRate from "@/components/rate/delete-rate";
 const Rate = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
@@ -108,18 +110,17 @@ const Rate = () => {
         />
       </div>
       <AddRate open={openAdd} onOpenChange={setOpenAdd} />
-      {/* <DeleteUser
-        open={openDelete}
-        onOpenChange={setOpenDelete}
-        selectedUser={selectedUser!}
-      />
-      
-      <AddUser open={openAdd} onOpenChange={setOpenAdd} />
-      <UpdateUser
+      <UpdateRate
         onOpenChange={setOpenUpdate}
         open={openUpdate}
-        selectedUser={selectedUser!}
-      /> */}
+        selectedRate={selectedRate!}
+      />
+      <DeleteRate
+        open={openDelete}
+        onOpenChange={setOpenDelete}
+        selectedRate={selectedRate!}
+      />
+
       <Dialog open={advancedFilter} onOpenChange={setAdvancedFilter}>
         <DialogContent className="min-w-[700px] pb-8 pt-6 px-6">
           <DialogHeader>
@@ -284,6 +285,7 @@ const Rate = () => {
                 type="button"
                 className="cursor-pointer "
                 variant={"outline"}
+                onClick={() => setAdvancedFilter(false)}
               >
                 Huỷ
               </Button>

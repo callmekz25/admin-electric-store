@@ -39,3 +39,12 @@ export const updateRate = async (request: IRate) => {
     console.log(error);
   }
 };
+
+export const deleteRate = async (id: number) => {
+  try {
+    const { data } = await httpRequest.delete(`${url}/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

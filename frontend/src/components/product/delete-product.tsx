@@ -39,19 +39,12 @@ const DeleteProduct = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl">
-            Xoá thông tin của nhà cung cấp?
+            Xoá thông tin của sản phẩm?
           </DialogTitle>
           <DialogDescription className="text-md">
             Lưu ý không thể hoàn tác thao tác
           </DialogDescription>
           <div className="text-sm flex flex-col gap-1">
-            {selectedProduct ? (
-              <>
-                <p>Mã sản phẩm: {selectedProduct.MaSP ?? "N/A"}</p>
-              </>
-            ) : (
-              ""
-            )}
             <div className="flex mt-4 items-center justify-end gap-3">
               <Button
                 disabled={isPending}

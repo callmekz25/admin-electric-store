@@ -72,6 +72,10 @@ const columns = ({
       );
     },
     cell: ({ row }) => <h3 className=" text-sm  ">{row.original.MaDG}</h3>,
+    filterFn: (row, columnId, filterValue) => {
+      const cellValue = row.getValue(columnId);
+      return Number(cellValue) === Number(filterValue);
+    },
     meta: {
       label: "Mã đánh giá",
     },
@@ -130,6 +134,10 @@ const columns = ({
       );
     },
     cell: ({ row }) => <h3 className=" text-sm ">{row.original.SoSao}</h3>,
+    filterFn: (row, columnId, filterValue) => {
+      const cellValue = row.getValue(columnId);
+      return Number(cellValue) === Number(filterValue);
+    },
     meta: {
       label: "Số sao",
     },

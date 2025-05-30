@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/select";
 import { Button } from "../ui/button";
 import { XIcon } from "lucide-react";
-import type IProductView from "@/interfaces/product/product-view.interface";
 import { useGetTypesProduct } from "@/hooks/type-product";
 import Loading from "../ui/loading";
 import type ITypeProduct from "@/interfaces/product/type-product.interface";
@@ -354,7 +353,12 @@ const UpdateProduct = ({
                       name="ChiTietSanPham.BaoHanh"
                       control={control}
                       render={({ field }) => (
-                        <Input {...field} id="BaoHanh" className="rounded" />
+                        <Input
+                          {...field}
+                          id="BaoHanh"
+                          type="number"
+                          className="rounded"
+                        />
                       )}
                     />
                     {errors.ChiTietSanPham?.BaoHanh && (

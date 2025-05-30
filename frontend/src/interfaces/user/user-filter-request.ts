@@ -1,4 +1,5 @@
 interface IUserFilterRequest {
+  mtk: string;
   ht: string;
   gt: string;
   ns: string;

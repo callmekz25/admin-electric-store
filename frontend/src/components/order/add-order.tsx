@@ -309,7 +309,7 @@ const AddOrder = ({
                 </div>
               </div>
               <div className="flex flex-col gap-6">
-                <div className="flex flex-col gap-2">
+                {/* <div className="flex flex-col gap-2">
                   <Label
                     htmlFor="TtVanChuyen.MaVC"
                     className=" font-normal opacity-70"
@@ -327,7 +327,7 @@ const AddOrder = ({
                       />
                     )}
                   />
-                </div>
+                </div> */}
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="dvvc" className=" font-normal opacity-70">
                     Đơn vị vận chuyển
