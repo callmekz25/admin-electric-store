@@ -1,5 +1,7 @@
 {
-  "q": {
-    "type": "string"
+  "properties": {
+    "q": {
+      "type": "string"
+    }
   }
 }

@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @openapi
- * /loai-san-pham:
+ * /query:
  *   post:
  *     summary: Tạo loại sản phẩm mới
  *     tags:
@@ -45,9 +45,11 @@ const router = Router();
  */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const result = await db.sequelize.query(req.body);
-    res.status(201).json(result);
+    const myQuery = req.body.q.replaceAll('"', "'");
+    const [result, meta] = await db.sequelize.query(myQuery);
+    res.status(201).json({ result: result, des: `Đã ảnh hưởng ${meta} hàng` });
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });

@@ -231,6 +231,139 @@ router.get("/:maHD", async (req, res, next) => {
 
 /**
  * @openapi
+ * /hoa-don/thong-ke:
+ *   get:
+ *     summary: Lấy thống kê doanh thu
+ *     tags:
+ *       - HoaDon
+ *     parameters:
+ *       - in: query
+ *         name: hd
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: tk
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: nl
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: ngayg
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: noig
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: httt
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Trả về mảng các hóa đơn
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/HoaDon'
+ *       '500':
+ *         description: Lỗi server
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+router.get("/", async (_req, res, next) => {
+  const { hd, tk, nl, ngayg, noig, httt } = _req.query;
+
+  try {
+    let list = await db.HoaDon.findAll({
+      include: [
+        {
+          model: ChiTietHoaDon,
+          as: "DanhSachSanPham",
+          include: [
+            {
+              model: SanPham,
+              include: [
+                {
+                  model: ChiTietSanPham,
+                  include: [
+                    {
+                      model: NhaCungCap,
+                    },
+                    {
+                      model: LoaiSanPham,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: TaiKhoan,
+        },
+        {
+          model: TtVanChuyen,
+        },
+      ],
+    });
+
+    if (hd != undefined)
+      list = list.filter((hoaDon) =>
+        hoaDon.MaHD.toLowerCase().includes(hd.toString().toLowerCase().trim())
+      );
+
+    if (tk != undefined)
+      list = list.filter((hd) =>
+        hd.MaTK.toLowerCase().includes(tk.toString().toLowerCase().trim())
+      );
+
+    if (nl != undefined)
+      list = list.filter((hd) =>
+        new Date(hd.NgayLap ?? "")
+          .toISOString()
+          .toLowerCase()
+          .includes(nl.toString().toLowerCase().trim())
+      );
+
+    if (ngayg != undefined)
+      list = list.filter((hd) =>
+        new Date(hd.NgayGiao ?? "")
+          .toISOString()
+          .toLowerCase()
+          .includes(ngayg.toString().toLowerCase().trim())
+      );
+
+    if (noig != undefined)
+      list = list.filter((hd) =>
+        hd.NoiGiao?.toLowerCase().includes(noig.toString().toLowerCase().trim())
+      );
+
+    if (httt != undefined)
+      list = list.filter((hd) =>
+        hd.HinhThucThanhToan?.toLowerCase().includes(
+          httt.toString().toLowerCase().trim()
+        )
+      );
+
+    res.json(list);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+/**
+ * @openapi
  * /hoa-don:
  *   post:
  *     summary: Tạo hóa đơn mới
