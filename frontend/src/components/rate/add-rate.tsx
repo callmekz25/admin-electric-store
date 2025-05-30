@@ -27,6 +27,7 @@ import { useGetUsers } from "@/hooks/user";
 import { useGetProducts } from "@/hooks/product";
 import type IProduct from "@/interfaces/product/product.interface";
 import { Textarea } from "../ui/textarea";
+import Loading from "../ui/loading";
 const AddRate = ({
   open,
   onOpenChange,
@@ -67,8 +68,11 @@ const AddRate = ({
       onError: (error) => toast.error(error.message),
     });
   };
-  const { data: users } = useGetUsers();
-  const { data: products } = useGetProducts();
+  const { data: users, isLoading: ilu } = useGetUsers();
+  const { data: products, isLoading: ilp } = useGetProducts();
+  if (ilp || ilu) {
+    return <Loading />;
+  }
   return (
     <div className="">
       <>

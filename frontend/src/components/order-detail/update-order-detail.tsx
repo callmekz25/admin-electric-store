@@ -64,9 +64,9 @@ const UpdateOrderDetail = ({
     const request = { ...data, GiaBan: product.Gia * data.SoLuong! };
 
     updateOT(request, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         toast.success("Cập nhật thành công");
-        reset();
+        reset(data);
         queryClient.invalidateQueries({ queryKey: ["orders-detail"] });
       },
       onError: (error) => toast.error(error.message),

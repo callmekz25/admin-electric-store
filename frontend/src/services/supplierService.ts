@@ -7,6 +7,7 @@ export const getSuppliers = async (filter: ISupplierFilterRequest) => {
   try {
     const query = filter
       ? {
+          mncc: filter.mncc,
           t: filter.t,
           dc: filter.dc,
           sdt: filter.sdt,

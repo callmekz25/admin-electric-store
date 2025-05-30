@@ -45,13 +45,6 @@ const DeleteOrder = ({
             Lưu ý không thể hoàn tác thao tác
           </DialogDescription>
           <div className="text-sm flex flex-col gap-1">
-            {selectedOrder ? (
-              <>
-                <p>Mã hoá đơn: {selectedOrder.MaHD ?? "N/A"}</p>
-              </>
-            ) : (
-              ""
-            )}
             <div className="flex mt-4 items-center justify-end gap-3">
               <Button
                 disabled={isPending}

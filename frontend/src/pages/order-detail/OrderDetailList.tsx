@@ -1,13 +1,10 @@
 import columns from "@/components/order-detail/columns-order-detail";
 
 import { DataTable } from "@/components/table/data-table";
-
-import type IOrderFilterRequest from "@/interfaces/order/order-filter-request.interface";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
 import {
   Dialog,
   DialogContent,
@@ -20,7 +17,6 @@ import { useGetOrdersDetail } from "@/hooks/order-detail";
 import type IOrderDetail from "@/interfaces/order/order-detail.interface";
 import AddOrderDetail from "@/components/order-detail/add-order-detail";
 import UpdateOrderDetail from "@/components/order-detail/update-order-detail";
-
 import type IOrderDetailFilterRequest from "@/interfaces/order/order-detail-filter-request";
 const OrderDetailList = () => {
   const [openUpdate, setOpenUpdate] = useState(false);
@@ -156,6 +152,7 @@ const OrderDetailList = () => {
                 type="button"
                 className="cursor-pointer "
                 variant={"outline"}
+                onClick={() => setAdvancedFilter(false)}
               >
                 Huỷ
               </Button>

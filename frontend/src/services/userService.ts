@@ -7,6 +7,7 @@ export const getUsers = async (filter: IUserFilterRequest) => {
   try {
     const query = filter
       ? {
+          mtk: filter?.mtk,
           ns: filter.ns ? format(filter.ns, "yyyy-MM-dd") : undefined,
           ht: filter.ht,
           gt: filter.gt,

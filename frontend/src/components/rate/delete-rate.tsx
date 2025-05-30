@@ -6,29 +6,30 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
-import type ISupplier from "@/interfaces/supplier/supplier.interface";
-import { useDeleteSupplier } from "@/hooks/supplier";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-const DeleteSupplier = ({
-  selectedSupplier,
+import type IRate from "@/interfaces/rate/rate.interface";
+import { useDeleteRate } from "@/hooks/rate";
+
+const DeleteRate = ({
+  selectedRate,
   open,
   onOpenChange,
 }: {
-  selectedSupplier: ISupplier;
+  selectedRate: IRate;
   open: boolean;
   onOpenChange: (value: boolean) => void;
 }) => {
   const queryClient = useQueryClient();
-  const { mutate: deleteSupplier, isPending } = useDeleteSupplier();
+  const { mutate: deleteRate, isPending } = useDeleteRate();
   const handleDelete = () => {
     const request = {
-      id: selectedSupplier.MaNCC,
+      id: selectedRate.MaDG,
     };
-    deleteSupplier(request, {
+    deleteRate(request, {
       onSuccess: () => {
         toast.success("Xoá thành công");
-        queryClient.invalidateQueries({ queryKey: ["suppliers"] });
+        queryClient.invalidateQueries({ queryKey: ["rates"] });
         onOpenChange(false);
       },
       onError: (error) => toast.error(error.message),
@@ -39,7 +40,7 @@ const DeleteSupplier = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl">
-            Xoá thông tin của nhà cung cấp?
+            Xoá thông tin của đánh giá?
           </DialogTitle>
           <DialogDescription className="text-md">
             Lưu ý không thể hoàn tác thao tác
@@ -72,4 +73,4 @@ const DeleteSupplier = ({
   );
 };
 
-export default DeleteSupplier;
+export default DeleteRate;

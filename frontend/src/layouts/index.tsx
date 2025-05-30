@@ -80,7 +80,7 @@ const Layout = () => {
               }`}
             >
               <UsersRoundIcon className="size-5" />
-              Khách hàng
+              Tài khoản
             </Link>
           </li>
 

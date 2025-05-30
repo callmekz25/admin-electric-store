@@ -7,6 +7,7 @@ export const getProducts = async (filter: IProductSearchRequest) => {
   try {
     const query = filter
       ? {
+          msp: filter?.msp,
           t: filter.t,
           ctsp: filter.ctsp,
           mgg: filter.mgg,
