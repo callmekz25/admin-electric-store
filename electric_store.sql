@@ -11,12 +11,12 @@ WITH PASSWORD = '1';
 CREATE DATABASE BAITAPNHOM;
 GO
 
-CREATE USER my_admin FOR LOGIN my_admin;
-ALTER ROLE db_owner ADD MEMBER my_admin;
-
 -- Sử dụng cơ sở dữ liệu
 USE BAITAPNHOM;
 GO
+
+CREATE USER my_admin FOR LOGIN my_admin;
+ALTER ROLE db_owner ADD MEMBER my_admin;
 
 -- Bảng tài khoản
 CREATE TABLE TAIKHOAN (
@@ -228,18 +228,18 @@ VALUES
 
 INSERT INTO CHITIET_HOADON
 VALUES
-		('HD001', 'SP010', 4, NULL),
-		('HD002', 'SP001', 1, NULL),
-		('HD003', 'SP009', 1, NULL),
-		('HD004', 'SP005', 2, NULL),
-		('HD005', 'SP010', 1, NULL),
-		('HD006', 'SP002', 3, NULL),
-		('HD007', 'SP004', 2, NULL),
-		('HD008', 'SP012', 2, NULL),
-		('HD009', 'SP014', 1, NULL),
-		('HD010', 'SP005', 2, NULL),
-		('HD011', 'SP011', 1, NULL),
-		('HD012', 'SP003', 1, NULL);
+		('HD001', 'SP010', 4, 400000),
+		('HD002', 'SP001', 1, 250000),
+		('HD003', 'SP009', 1, 50000),
+		('HD004', 'SP005', 2, 10000),
+		('HD005', 'SP010', 1, 220000),
+		('HD006', 'SP002', 3, 170000),
+		('HD007', 'SP004', 2, 130000),
+		('HD008', 'SP012', 2, 399999),
+		('HD009', 'SP014', 1, 340000),
+		('HD010', 'SP005', 2, 123000),
+		('HD011', 'SP011', 1, 122000),
+		('HD012', 'SP003', 1, 100000);
 
 INSERT INTO DANHGIA (MaDG, MaSP, MaTK, SoSao, BinhLuan, NgayDanhGia)
 VALUES
