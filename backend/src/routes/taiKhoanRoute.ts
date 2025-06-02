@@ -373,6 +373,7 @@ router.delete("/:maTK", async (req, res, next) => {
         .send({ description: "Xóa thành công, không trả về nội dung" });
     }
   } catch (err) {
+    console.log(err);
     next(err);
   }
 });

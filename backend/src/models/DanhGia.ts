@@ -29,7 +29,10 @@ DanhGia.init(
       allowNull: false,
     },
     MaSP: { type: DataTypes.STRING(10), allowNull: false },
-    MaTK: { type: DataTypes.STRING(10), allowNull: false },
+    MaTK: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+    },
     SoSao: {
       type: DataTypes.INTEGER,
       allowNull: false,
