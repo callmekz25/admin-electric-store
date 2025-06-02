@@ -37,12 +37,12 @@ HoaDon.init(
     MaTK: {
       type: DataTypes.STRING(10),
       allowNull: false,
-      // references: {
-      //   model: "TAIKHOAN",
-      //   key: "MaTK",
-      // },
-      //onUpdate: "CASCADE",
-      // onDelete: "NO ACTION",
+      references: {
+        model: "TAIKHOAN",
+        key: "MaTK",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
     },
     NgayLap: { type: DataTypes.DATEONLY, allowNull: true },
     NgayGiao: { type: DataTypes.DATEONLY, allowNull: true },

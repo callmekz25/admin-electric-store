@@ -52,13 +52,20 @@ TaiKhoan.init(
   }
 );
 
-TaiKhoan.hasMany(DanhGia, { foreignKey: "MaTK", sourceKey: "MaTK" });
+TaiKhoan.hasMany(DanhGia, {
+  foreignKey: "MaTK",
+  sourceKey: "MaTK",
+  onUpdate: "CASCADE",
+  onDelete: "CASCADE",
+});
 DanhGia.belongsTo(TaiKhoan, { foreignKey: "MaTK", targetKey: "MaTK" });
 
 TaiKhoan.hasMany(HoaDon, {
   foreignKey: "MaTk",
   sourceKey: "MaTK",
   as: "DanhSachHoaDon",
+  onUpdate: "CASCADE",
+  onDelete: "CASCADE",
 });
 
 HoaDon.belongsTo(TaiKhoan, { foreignKey: "MaTK", targetKey: "MaTK" });

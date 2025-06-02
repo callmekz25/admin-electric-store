@@ -312,10 +312,6 @@ const AddProduct = ({
                       <Input {...field} id="ctsp" className="rounded" />
                     )}
                   />
-                  <span className="text-[13px]">
-                    Mã chi tiết sản phẩm cuối: {""}
-                    {lastProductDetail}
-                  </span>
                   {errors.MaCTSP && (
                     <span className="text-[13px] text-red-500">
                       {errors.MaCTSP.message}

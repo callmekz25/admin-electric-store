@@ -1,6 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { db } from "../models";
-import { DanhGia } from "../models/DanhGia";
 import { HoaDon } from "../models/HoaDon";
 import { ChiTietHoaDon } from "../models/ChiTietHoaDon";
 import { ChiTietSanPham } from "../models/ChiTietSanPham";
@@ -9,6 +8,8 @@ import { NhaCungCap } from "../models/NhaCungCap";
 import { SanPham } from "../models/SanPham";
 import { TaiKhoan } from "../models/TaiKhoan";
 import { TtVanChuyen } from "../models/TtVanChuyen";
+import { col, fn, literal } from "sequelize";
+import dayjs from "dayjs";
 
 const router = Router();
 
@@ -146,6 +147,142 @@ router.get("/", async (_req, res, next) => {
 
 /**
  * @openapi
+ * /hoa-don/thong-ke:
+ *   get:
+ *     summary: Lấy thống kê doanh thu
+ *     tags:
+ *       - HoaDon
+ *     parameters:
+ *       - in: query
+ *         name: year
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Trả về mảng các hóa đơn
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/HoaDon'
+ *       '500':
+ *         description: Lỗi server
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+router.get("/thong-ke-thang", async (_req, res, next) => {
+  const { year } = _req.query;
+
+  try {
+    const list = await db.sequelize.query(`DECLARE @Year INT = ${year};
+  WITH Months AS (
+    SELECT 1 AS [Month]
+    UNION ALL SELECT 2
+    UNION ALL SELECT 3
+    UNION ALL SELECT 4
+    UNION ALL SELECT 5
+    UNION ALL SELECT 6
+    UNION ALL SELECT 7
+    UNION ALL SELECT 8
+    UNION ALL SELECT 9
+    UNION ALL SELECT 10
+    UNION ALL SELECT 11
+    UNION ALL SELECT 12
+), RevenueByMonth AS (
+    SELECT
+      MONTH(h.NgayLap)            AS [Month],
+      SUM(ct.SoLuong * ct.GiaBan) AS Revenue
+    FROM HOADON h
+    JOIN CHITIET_HOADON ct ON h.MaHD = ct.MaHD
+    WHERE YEAR(h.NgayLap) = @Year
+    GROUP BY MONTH(h.NgayLap)
+)
+    SELECT
+  m.[Month],
+  ISNULL(r.Revenue, 0) AS Revenue
+FROM Months m
+LEFT JOIN RevenueByMonth r
+  ON m.[Month] = r.[Month]
+ORDER BY m.[Month];`);
+
+    res.json(list[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * @openapi
+ * /hoa-don/thong-ke:
+ *   get:
+ *     summary: Lấy thống kê doanh thu
+ *     tags:
+ *       - HoaDon
+ *     parameters:
+ *       - in: query
+ *         name: year
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Trả về mảng các hóa đơn
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/HoaDon'
+ *       '500':
+ *         description: Lỗi server
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ */
+router.get("/thong-ke-quy", async (_req, res, next) => {
+  const { year } = _req.query;
+
+  try {
+    const list = await db.sequelize.query(`DECLARE @Year INT = ${year};
+ WITH Quarters AS (
+    SELECT 1 AS [Quarter]
+    UNION ALL SELECT 2
+    UNION ALL SELECT 3
+    UNION ALL SELECT 4
+), RevenueByQuarter AS (
+    SELECT
+      DATEPART(QUARTER, h.NgayLap)   AS [Quarter],
+      SUM(ct.SoLuong * ct.GiaBan)    AS Revenue
+    FROM HOADON h
+    JOIN CHITIET_HOADON ct ON h.MaHD = ct.MaHD
+    WHERE YEAR(h.NgayLap) = @Year
+    GROUP BY DATEPART(QUARTER, h.NgayLap)
+)
+    SELECT
+  q.[Quarter],
+  ISNULL(r.Revenue, 0) AS Revenue
+FROM Quarters q
+LEFT JOIN RevenueByQuarter r
+  ON q.[Quarter] = r.[Quarter]
+ORDER BY q.[Quarter];`);
+
+    res.json(list[0]);
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * @openapi
  * /hoa-don/{maHD}:
  *   get:
  *     summary: Lấy thông tin hóa đơn theo maHD
@@ -229,138 +366,70 @@ router.get("/:maHD", async (req, res, next) => {
   }
 });
 
-/**
- * @openapi
- * /hoa-don/thong-ke:
- *   get:
- *     summary: Lấy thống kê doanh thu
- *     tags:
- *       - HoaDon
- *     parameters:
- *       - in: query
- *         name: hd
- *         schema:
- *           type: string
- *       - in: query
- *         name: tk
- *         schema:
- *           type: string
- *       - in: query
- *         name: nl
- *         schema:
- *           type: string
- *       - in: query
- *         name: ngayg
- *         schema:
- *           type: string
- *       - in: query
- *         name: noig
- *         schema:
- *           type: string
- *       - in: query
- *         name: httt
- *         schema:
- *           type: string
- *     responses:
- *       '200':
- *         description: Trả về mảng các hóa đơn
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/HoaDon'
- *       '500':
- *         description: Lỗi server
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- */
-router.get("/", async (_req, res, next) => {
-  const { hd, tk, nl, ngayg, noig, httt } = _req.query;
+interface PeriodRevenue {
+  year: number;
+  month: number;
+  revenue: number;
+}
 
-  try {
-    let list = await db.HoaDon.findAll({
-      include: [
-        {
-          model: ChiTietHoaDon,
-          as: "DanhSachSanPham",
-          include: [
-            {
-              model: SanPham,
-              include: [
-                {
-                  model: ChiTietSanPham,
-                  include: [
-                    {
-                      model: NhaCungCap,
-                    },
-                    {
-                      model: LoaiSanPham,
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          model: TaiKhoan,
-        },
-        {
-          model: TtVanChuyen,
-        },
-      ],
-    });
+// 1) Get overall date range:
+async function getDateRange(): Promise<{
+  start: dayjs.Dayjs;
+  end: dayjs.Dayjs;
+}> {
+  const minMax = await HoaDon.findOne({
+    attributes: [
+      [fn("MIN", col("NgayLap")), "minDate"],
+      [fn("MAX", col("NgayLap")), "maxDate"],
+    ],
+    raw: true,
+  });
+  return {
+    start: dayjs((minMax as any).minDate),
+    end: dayjs((minMax as any).maxDate),
+  };
+}
 
-    if (hd != undefined)
-      list = list.filter((hoaDon) =>
-        hoaDon.MaHD.toLowerCase().includes(hd.toString().toLowerCase().trim())
-      );
+// 2) Fetch actual revenue by month:
+async function fetchRevenueByMonth() {
+  return ChiTietHoaDon.findAll({
+    include: [{ model: HoaDon, attributes: [] }],
+    attributes: [
+      [fn("YEAR", col("Invoice.NgayLap")), "year"],
+      [fn("MONTH", col("Invoice.NgayLap")), "month"],
+      [literal("SUM(SoLuong * GiaBan)"), "revenue"],
+    ],
+    group: ["year", "month"],
+    order: [
+      ["year", "ASC"],
+      ["month", "ASC"],
+    ],
+    raw: true,
+  });
+}
 
-    if (tk != undefined)
-      list = list.filter((hd) =>
-        hd.MaTK.toLowerCase().includes(tk.toString().toLowerCase().trim())
-      );
-
-    if (nl != undefined)
-      list = list.filter((hd) =>
-        new Date(hd.NgayLap ?? "")
-          .toISOString()
-          .toLowerCase()
-          .includes(nl.toString().toLowerCase().trim())
-      );
-
-    if (ngayg != undefined)
-      list = list.filter((hd) =>
-        new Date(hd.NgayGiao ?? "")
-          .toISOString()
-          .toLowerCase()
-          .includes(ngayg.toString().toLowerCase().trim())
-      );
-
-    if (noig != undefined)
-      list = list.filter((hd) =>
-        hd.NoiGiao?.toLowerCase().includes(noig.toString().toLowerCase().trim())
-      );
-
-    if (httt != undefined)
-      list = list.filter((hd) =>
-        hd.HinhThucThanhToan?.toLowerCase().includes(
-          httt.toString().toLowerCase().trim()
-        )
-      );
-
-    res.json(list);
-  } catch (err) {
-    next(err);
+// 3) Generate full month list between two dates:
+function genMonthSeries(start: dayjs.Dayjs, end: dayjs.Dayjs) {
+  const arr: { year: number; month: number }[] = [];
+  let cur = start.startOf("month");
+  while (cur.isBefore(end) || cur.isSame(end, "month")) {
+    arr.push({ year: cur.year(), month: cur.month() + 1 });
+    cur = cur.add(1, "month");
   }
-});
+  return arr;
+}
 
+// 4) Combine and fill zeros:
+export async function revenueByMonthComplete() {
+  const { start, end } = await getDateRange();
+  const data = await fetchRevenueByMonth();
+  const full = genMonthSeries(start, end).map((p) => {
+    console.log(data);
+    // const found = data.find((d) => d.year === p.year && d.month === p.month);
+    // return { ...p, revenue: found ? Number(found.revenue) : 0 };
+  });
+  return data; // array of { year, month, revenue }
+}
 
 /**
  * @openapi
